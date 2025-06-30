@@ -48,7 +48,6 @@ char *do_heredoc(char *eof, int expand)
 	char *line;
 
 	file = mkfilename(eof);
-	add_node(&g_shell.hdoc, file);
 	fd = open(file, O_WRONLY | O_CREAT, 0644);
 	while (1)
 	{

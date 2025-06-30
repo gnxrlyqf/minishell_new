@@ -138,6 +138,8 @@ void				skip_space_sep(t_lexer *lexer);
 
 // Creating command list
 t_cmd				*create_pipeline(t_list *list);
+char				*do_heredoc(char *eof, int expand);
+char				*quotes(char *str);
 
 // DEBUGGING
 const char			*state_to_str(t_state state);

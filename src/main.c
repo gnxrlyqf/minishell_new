@@ -62,7 +62,8 @@ int main(int ac, char **av, char **envp)
 {
     char *input = NULL;
     t_lexer *lexer = NULL;
-    
+    t_list *cur = NULL;
+
     init_shell(envp);
     while (1)
     {
@@ -82,13 +83,13 @@ int main(int ac, char **av, char **envp)
         // Print final EOF
         set_context(lexer, '\0');
         set_state(lexer);
+        // Unclosed quotes error: To check
         // Reset offset and resolve tokens
         lexer->offset = lexer->input;
         resolve_tokens(lexer);
 
         // Print resolved tokens
         // printf("\nResolved Tokens:\n");
-        t_list *cur = lexer->tokens;
 
         // while (cur)
         // {
@@ -99,6 +100,7 @@ int main(int ac, char **av, char **envp)
         //         expendable_to_str(tok->expendable));
         //     cur = cur->next;
         // }
+        cur = lexer->tokens;
         start(create_pipeline(lexer->tokens));
         free_lexer(lexer);
         free(input);

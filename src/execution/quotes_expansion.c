@@ -63,6 +63,8 @@ int fill_var(char *str, t_list **list)
 	char *value;
 	int varsize;
 
+	if (*str == '?')
+		return (expand_status(list));
 	if (_strchr(" '\"", *str))
 		return (1);
 	varname = _strndup(str, " $'\"");

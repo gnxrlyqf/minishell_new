@@ -42,9 +42,11 @@ t_cmd *init_cmd(t_list *list)
 
 t_token check_heredoc(t_token_type type, t_token *token)
 {
+	char *eof;
 	if (type != Here_doc)
 		return (*token);
-	// token->value = do_heredoc();
+	eof = quotes(token->value);
+	token->value = do_heredoc(eof, token->expendable);
 	return (*token);
 }
 

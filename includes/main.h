@@ -41,11 +41,10 @@ typedef struct s_env
 
 typedef struct s_shell
 {
-	char *str;
 	t_error *error;
+	t_cmd *pipeline;
 	t_env *env;
 	int status;
-	t_list *hdoc;
 } t_shell;
 
 typedef void (*error_handler)(char *data);
@@ -117,5 +116,7 @@ void	perm_denied(char *data);
 void	is_dir(char *data);
 int		start(t_cmd *pipeline);
 void	init_shell(char **envp);
+char    *_itoa(int n);
+int		expand_status(t_list **list);
 
 # endif
