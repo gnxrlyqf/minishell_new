@@ -106,9 +106,14 @@ t_cmd *create_pipeline(t_list *list)
 	cmd = head;
 	while (list && ((t_token *)list->data)->type != End_of_file)
 	{
+		if (((t_token *)list->data)->type == Pipe)
+		{
+			list = list->next;
+			continue ;
+		}
 		cpy = list;
 		cmd->next = create_cmd(&list, cpy);
 		cmd = cmd->next;
 	}
-	return (cmd);
+	return (head);
 }

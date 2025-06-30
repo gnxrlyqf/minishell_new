@@ -96,7 +96,7 @@ void	exec(t_token *args, int size)
 	path = which(*arr, g_shell.env);
 	// free(*arr);
 	*arr = path;
-	fprintf(2, "%s\n", *arr);
+	// fprintf(2, "%s\n", *arr);
 	envp = mkenvp(g_shell.env);
 	execve(*arr, arr, envp);
 	throw_err(CMD_ENOENT, *arr);

@@ -58,12 +58,12 @@ void print_expandable_tokens(t_lexer *lexer)
     }
 }
 
-int main(int ac, char **av)
+int main(int ac, char **av, char **envp)
 {
     char *input = NULL;
     t_lexer *lexer = NULL;
     
-    init_shell(av);
+    init_shell(envp);
     while (1)
     {
         input = readline("minishell> ");
