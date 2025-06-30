@@ -11,6 +11,8 @@ int check_builtins(t_cmd *cmd)
 		"echo", "cd", "pwd", "export", "unset", "env", "exit"
 	};
 
+	if (cmd->redircount)
+		redir(cmd->redir, cmd->redircount);
 	if (!cmd->argcount)
 		return (-1);
 	args = extract_args(cmd->args, cmd->argcount);
