@@ -35,7 +35,7 @@ char *quotes(char *str)
 			add_node(&list, cpy);
 		cpy++;
 	}
-	ret = make_str(list);
+	add_node(&list, cpy);
 	free_list(&list);
 	return (ret);
 }
@@ -48,16 +48,16 @@ char *quotes_expand(char *str)
 	int c;
 	
 	list = NULL;
-	c = 0;
+	c = -1;
 	cpy = str;
 	while (*cpy)
 	{
 		if (*cpy == '$' && c != '\'' && *(cpy + 1) >= 48)
 			cpy += fill_var(cpy + 1, &list);
-		if ((*cpy == '\'' || *cpy == '"') && c == 0)
+		if ((*cpy == '\'' || *cpy == '"') && c == -1)
 			c = *cpy;
 		else if (*cpy == c)
-			c = 0;
+			c = -1;
 		else
 			add_node(&list, cpy);
 		cpy++;
