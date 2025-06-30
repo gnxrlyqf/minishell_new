@@ -11,6 +11,8 @@ int check_builtins(t_cmd *cmd)
 		"echo", "cd", "pwd", "export", "unset", "env", "exit"
 	};
 
+	if (!cmd->argcount)
+		return (-1);
 	args = extract_args(cmd->args, cmd->argcount);
 	i = 0;
 	while (i < 7 && _strcmp(args[0], names[i]))

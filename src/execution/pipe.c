@@ -18,7 +18,8 @@ void	cmd_pipe(t_cmd *cmd)
 		dup2(fdp[1], 1);
 		if (cmd->redircount)
 			redir(cmd->redir, cmd->redir);
-		exec(cmd->args, cmd->argcount);
+		if (cmd->argcount)
+			exec(cmd->args, cmd->argcount);
 	}
 	else
 	{

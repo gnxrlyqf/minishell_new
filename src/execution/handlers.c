@@ -45,7 +45,8 @@ int cmd(t_cmd *cmd)
 	{
 		if (cmd->redircount)
 			redir(cmd->redir, cmd->redircount);
-		exec(cmd->args, cmd->argcount);
+		if (cmd->argcount)
+			exec(cmd->args, cmd->argcount);
 	}
 	else
 		waitpid(pid, &status, 0);
