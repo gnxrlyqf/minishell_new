@@ -116,9 +116,13 @@ int main(int ac, char **av, char **envp)
     init_shell(envp);
     while (1)
     {
+        setup_prompt_signals(); // FOR SIGNALS !!
         input = readline("minishell> ");
         if (!input)
+        {
+            write(1, "\nexit\n", 6);
             break;
+        }
         if (*input)
             add_history(input);
 

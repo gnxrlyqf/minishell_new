@@ -8,18 +8,6 @@
 
 # include <stdbool.h>
 
-// To change later
-typedef struct s_minishell
-{
-	char	**environ;
-	char	*line;
-	int		exit_s;
-	bool	signint_child;
-	bool	heredoc_sigint;
-}	t_minishell;
-
-extern t_minishell g_minishell;
-
 // Token types
 typedef enum e_token_type
 {
@@ -134,7 +122,6 @@ void				set_context(t_lexer *lexer, char c);
 
 // Resolving tokens
 void				resolve_tokens(t_lexer *lexer);
-void				skip_space_sep(t_lexer *lexer);
 
 // Creating command list
 t_cmd				*create_pipeline(t_list *list);
@@ -142,15 +129,18 @@ char				*do_heredoc(char *eof, int expand);
 char				*quotes(char *str);
 
 // DEBUGGING
-const char			*state_to_str(t_state state);
-const char			*context_to_str(t_context context);
+// const char			*state_to_str(t_state state);
+// const char			*context_to_str(t_context context);
 t_token_type		get_token_type(t_state state);
 t_quote_type		get_quote_type(t_context context);
 const char			*token_type_to_str(t_token_type type);
 
 // Functions from signals.c
-void	ft_init_signals(void);
+
+void	setup_prompt_signals(void);
+void	reset_signals_in_child(void);
+void	setup_exec_signals(void);
+void	setup_heredoc_signals(void);
 void	ft_sigint_handler(int sig);
-void	ft_reset_signals_in_child(void);	
 
 #endif

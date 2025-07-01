@@ -75,4 +75,5 @@ void init_shell(char **envp)
 	g_shell.error = malloc(sizeof(t_error));
 	g_shell.env = init_env(envp);
 	g_shell.status = 0;
+	tcgetattr(STDIN_FILENO, &g_shell.orig_termios); // FOR SIGNAL HANDLING !!
 }
