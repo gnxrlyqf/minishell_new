@@ -2,10 +2,22 @@
 
 int do_pipeline(t_cmd *pipeline)
 {
+	int status;
+
+	status = 0;
 	while (pipeline->next)
 	{
 		cmd_pipe(pipeline);
 		pipeline = pipeline->next;
+	}
+	while (waitpid(-1, &status, 0) != -1)
+	{
+		if (WIFSIGNALED(status) && status == 2)
+		{
+			g_shell.status = 130;
+			// write(1, "\n", 1);
+		}
+		g_shell.status = status >> 8;
 	}
 	return (cmd(pipeline));
 }
@@ -48,11 +60,10 @@ int cmd(t_cmd *cmd)
 		if (cmd->redircount)
 			redir(cmd->redir, cmd->redircount);
 		if (cmd->argcount)
-			exec(cmd->args, cmd->argcount);
+			exec(cmd->args);
 	}
 	else
 		waitpid(pid, &status, 0);
-	
 	g_shell.in_execution = false; // FOR SIGNALS !!
 	g_shell.status = status >> 8;
 	return (g_shell.status);

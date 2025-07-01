@@ -12,7 +12,7 @@
 # include <lexer.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-#include <termios.h>
+# include <termios.h>
 #include <signal.h>
 
 typedef enum e_err
@@ -70,6 +70,7 @@ char	*mkpath(char *path, char *cmd);
 char	*check_cwd(char *cmd, t_env *env);
 char	*check_path(char *path);
 char	*which(char *cmd, t_env *env);
+void	exec(char **args);
 int		cmd(t_cmd *cmd);
 void	cmd_pipe(t_cmd *cmd);
 char	**extract_args(t_token *tokens, int size);

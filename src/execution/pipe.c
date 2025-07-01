@@ -19,12 +19,11 @@ void	cmd_pipe(t_cmd *cmd)
 		if (cmd->redircount)
 			redir(cmd->redir, cmd->redir);
 		if (cmd->argcount)
-			exec(cmd->args, cmd->argcount);
+			exec(cmd->args);
 	}
 	else
 	{
 		close(fdp[1]);
 		dup2(fdp[0], 0);
 	}
-	g_shell.status = status >> 8;
 }
