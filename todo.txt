@@ -1,3 +1,31 @@
 1. exit status
 2. integrate heredoc
 3. fix exit builtin
+4. Heredoc Issue: Stops before Delim
+5. Another heredoc issue:
+  minishell> << hi 
+    > hi
+    > hi
+    > hi
+    > hi
+    > hi
+    > hi
+    > hi
+    > 
+    > hi
+    > hi
+    > hi
+    > hi
+    > hi
+    > hi
+    > hi
+    > hi
+    > hi
+    > hi ( I had to force stop it)
+
+6. "< file" should be "file1: No such file or directory" if file doesn't exist:
+        minishell> < file1
+        Error: syscall fail: open
+        Error: syscall fail: open
+
+7.
