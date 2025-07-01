@@ -77,7 +77,8 @@ t_cmd *create_cmd(t_list **list, t_list *cpy)
 		{
 			cmd->redir->type = tok->type;
 			*list = (*list)->next;
-			(cmd->redir++)->file = check_heredoc((cmd->redir - 1)->type, (*list)->data);
+			cmd->redir->file = check_heredoc(cmd->redir->type, (*list)->data);
+			cmd->redir++;
 		}
 		*list = (*list)->next;
 	}

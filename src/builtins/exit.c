@@ -2,6 +2,12 @@
 
 int __exit(char **args)
 {
-	(void)args;
-	exit(1);
+	int status;
+
+	status = 0;
+	if (args[1])
+		status = ft_atoi(args[1]);
+	free_pipeline(g_shell.pipeline);
+	free_env(g_shell.env);
+	exit(status);
 }

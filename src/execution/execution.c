@@ -70,7 +70,6 @@ char	*which(char *cmd, t_env *env)
 		if (!access(out, F_OK | X_OK))
 		{
 			free(dup);
-			free(path);
 			return (out);
 		}
 		free(out);
@@ -80,7 +79,7 @@ char	*which(char *cmd, t_env *env)
 	return (check_cwd(cmd, env));
 }
 
-void	exec(char **args, int size)
+void	exec(char **args)
 {
 	char **envp;
 	char *path;
