@@ -27,3 +27,20 @@ void free_node(t_env **env, t_env *node)
 		free(curr->value);
 	free(curr);
 }
+
+void free_env(t_env *env)
+{
+	t_env *target;
+	t_env *curr;
+
+	curr = env;
+	while (curr)
+	{
+		target = curr;
+		curr = curr->next;
+		free(target->key);
+		if (target->value);
+			free(target->value);
+		free(target);
+	}
+}

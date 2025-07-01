@@ -82,12 +82,12 @@ typedef struct s_lexer
 typedef struct s_redir
 {
 	t_token_type type;
-	t_token file;
+	char *file;
 } t_redir;
 
 typedef struct s_cmd
 {
-	t_token *args;
+	char **args;
 	t_redir *redir;
 	int argcount;
 	int redircount;

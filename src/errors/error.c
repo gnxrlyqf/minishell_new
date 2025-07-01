@@ -14,11 +14,3 @@ void throw_err(t_err code, char *data)
 	};
 	handlers[code](data);
 }
-
-void set_err(t_err code, char *data, int throw)
-{
-	g_shell.error->code = code;
-	g_shell.error->data = _strdup(data);
-	if (throw)
-		throw_err(code, data);
-}

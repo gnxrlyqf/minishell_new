@@ -1,11 +1,9 @@
 #include <main.h>
 
-int my_open(t_token tok, int flags)
+int my_open(char *path, int flags)
 {
 	int fd;
-	char *path;
 
-	path = quotes_expand(tok.value);
 	if (!*path || _strchr(path, ' ') || _strchr(path, '*'))
 		throw_err(AMBIG_REDIR, path);
 	if ((flags & O_RDONLY) && access(path, R_OK) == -1)
@@ -68,7 +66,7 @@ void redir(t_redir *redir, int size)
 	int i;
 	int in;
 	int out;
-	t_token file;
+	char *file;
 
 	i = 0;
 	in = 0;

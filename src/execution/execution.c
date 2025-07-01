@@ -9,10 +9,7 @@ char	*mkpath(char *path, char *cmd)
 		return (NULL);
 	out = malloc((size_t)(_strlen(path) + _strlen(cmd) + 2));
 	if (!out)
-	{
 		throw_err(SYSCALL_FAIL, "malloc");
-		;
-	}
 	i = 0;
 	while (*path)
 		out[i++] = *(path++);
@@ -32,12 +29,12 @@ char	*check_cwd(char *cmd, t_env *env)
 	while (curr && _strcmp(curr->key, "PWD"))
 		curr = curr->next;
 	if (!curr)
-		throw_err(CMD_ENOENT, cmd);
+		return (_strdup(cmd));
 	out = mkpath(curr->value, cmd);
 	if (!access(out, F_OK | X_OK))
 		return (out);
 	free(out);
-	return (cmd);
+	return (_strdup(cmd));
 }
 
 char	*check_path(char *path)
@@ -47,16 +44,15 @@ char	*check_path(char *path)
 	if (stat(path, &st) == -1)
 		return (NULL);
 	if (S_ISDIR(st.st_mode))
-		throw_err(IS_DIR, path);
+		throw_err(IS_DIR, _strdup(path));
 	if (!access(path, F_OK | X_OK))
-		return (path);
+		return (_strdup(path));
 	throw_err(PERM_DENIED, path);		
 	return (NULL);
 }
 
 char	*which(char *cmd, t_env *env)
 {
-	t_env 	*curr;
 	char	*out;
 	char	*path;
 	char	*dup;
@@ -64,40 +60,37 @@ char	*which(char *cmd, t_env *env)
 	path = check_path(cmd);
 	if (path)
 		return (path);
-	curr = env;
-	while (curr && _strcmp(curr->key, "PATH"))
-		curr = curr->next;
-	if (!curr)
-		throw_err(CMD_ENOENT, cmd);
-	dup = _strdup(curr->value);
+	dup = _strdup(get_env_val(env, "PATH"));
+	if (!dup)
+		return (cmd);
 	path = _strtok(dup, ":");
 	while (path)
 	{
 		out = mkpath(path, cmd);
 		if (!access(out, F_OK | X_OK))
+		{
+			free(dup);
+			free(path);
 			return (out);
+		}
 		free(out);
 		path = _strtok(NULL, ":");
 	}
-	return (free(dup), check_cwd(cmd, env));
+	free(dup);
+	return (check_cwd(cmd, env));
 }
 
-void	exec(t_token *args, int size)
+void	exec(char **args, int size)
 {
 	char **envp;
-	char **arr;
 	char *path;
+	int envsize;
 
-	if (!size)
-		return ;
-	arr = extract_args(args, size);
-	if (!**arr)
+	if (!**args)
 		throw_err(CMD_ENOENT, "");
-	path = which(*arr, g_shell.env);
-	// free(*arr);
-	*arr = path;
-	// fprintf(2, "%s\n", *arr);
-	envp = mkenvp(g_shell.env);
-	execve(*arr, arr, envp);
-	throw_err(CMD_ENOENT, *arr);
+	path = which(*args, g_shell.env);
+	envp = mkenvp(g_shell.env, &envsize);
+	execve(path, args, envp);
+	free_arr(envp, envsize);
+	throw_err(CMD_ENOENT, path);
 }

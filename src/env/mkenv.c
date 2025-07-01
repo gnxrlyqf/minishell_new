@@ -9,19 +9,19 @@ char *mkvar(t_env *env)
 
 	key = env->key;
 	val = env->value;
-	len = _strlen(env->key) + _strlen(env->value) + 1;
+	len = _strlen(key) + _strlen(val) + 1;
 	ret = malloc(sizeof(char) * (len + 1));
+	ret[len] = 0;
 	while (*key)
 		*(ret++) = *(key++);
 	*(ret++) = '=';
 	while (*val)
 		*(ret++) = *(val++);
-	*ret = 0;
 	ret -= len;
 	return (ret);
 }
 
-char **mkenvp(t_env *env)
+char **mkenvp(t_env *env, int *envsize)
 {
 	int size;
 	t_env *curr;
@@ -36,6 +36,7 @@ char **mkenvp(t_env *env)
 		envp++;
 		curr = curr->next;
 	}
+	*envsize = size;
 	*envp = NULL;
 	envp -= size;
 	return (envp);
