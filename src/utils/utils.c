@@ -74,5 +74,5 @@ void init_shell(char **envp)
 {
 	g_shell.env = init_env(envp);
 	g_shell.status = 0;
-	g_shell.pipeline = NULL;
+	tcgetattr(STDIN_FILENO, &g_shell.orig_termios); // FOR SIGNAL HANDLING !!
 }
