@@ -38,11 +38,13 @@ int cmd(t_cmd *cmd)
 	if (status != -1)
 		return (status);
 	status = 0;
+	setup_exec_signals(); // FOR SIGNALS !!
 	pid = fork();
 	if (pid == -1)
 		throw_err(SYSCALL_FAIL, "fork");
 	if (!pid)
 	{
+		reset_signals_in_child(); // FOR SIGNALS !!
 		if (cmd->redircount)
 			redir(cmd->redir, cmd->redircount);
 		if (cmd->argcount)
@@ -50,6 +52,8 @@ int cmd(t_cmd *cmd)
 	}
 	else
 		waitpid(pid, &status, 0);
+	
+	g_shell.in_execution = false; // FOR SIGNALS !!
 	g_shell.status = status >> 8;
 	return (g_shell.status);
 }

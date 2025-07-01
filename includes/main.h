@@ -12,6 +12,8 @@
 # include <lexer.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+#include <termios.h>
+#include <signal.h>
 
 typedef enum e_err
 {
@@ -44,6 +46,9 @@ typedef struct s_shell
 	t_cmd *pipeline;
 	t_env *env;
 	int status;
+	bool    in_execution; // Indicates if we are in a command execution context
+    bool    heredoc_sigint; // Indicates if SIGINT was received during a heredoc
+	struct termios orig_termios; // Original terminal settings for restoring later
 } t_shell;
 
 typedef void (*error_handler)(char *data);
