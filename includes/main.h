@@ -41,7 +41,6 @@ typedef struct s_env
 
 typedef struct s_shell
 {
-	t_error *error;
 	t_cmd *pipeline;
 	t_env *env;
 	int status;
@@ -58,7 +57,7 @@ int		list_len(t_list *list);
 int		fill_var(char *str, t_list **list);
 char	*make_str(t_list *list);
 char	*quotes_expand(char *str);
-int		my_open(t_token tok, int flags);
+int		my_open(char *file, int flags);
 char	*mkfilename(char *path);
 char	*do_heredoc(char *eof, int expand);
 void	redir(t_redir *redir, int size);
@@ -66,13 +65,13 @@ char	*mkpath(char *path, char *cmd);
 char	*check_cwd(char *cmd, t_env *env);
 char	*check_path(char *path);
 char	*which(char *cmd, t_env *env);
-void	exec(t_token *tokens, int size);
+void	exec(char **args, int size);
 int		cmd(t_cmd *cmd);
 void	cmd_pipe(t_cmd *cmd);
 char	**extract_args(t_token *tokens, int size);
 t_env	*init_env(char **envp);
 char	*mkvar(t_env *env);
-char	**mkenvp(t_env *env);
+char	**mkenvp(t_env *env, int *envsize);
 t_env	*add_node_env(t_env **head, char *name, char *value);
 char	*get_env_val(t_env *env, char *key);
 t_env	*get_env(t_env *env, char *key);
@@ -118,5 +117,8 @@ int		start(t_cmd *pipeline);
 void	init_shell(char **envp);
 char    *_itoa(int n);
 int		expand_status(t_list **list);
+void	free_arr(char **arr, int size);
+void	free_pipeline(t_cmd *pipeline);
+void	free_env(t_env *env);
 
 # endif

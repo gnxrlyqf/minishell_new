@@ -136,23 +136,12 @@ int main(int ac, char **av, char **envp)
             free(input);
             continue;
         }
-        // Print resolved tokens
-        // printf("\nResolved Tokens:\n");
-        // t_list *cur = lexer->tokens;
-
-        // while (cur)
-        // {
-        //     t_token *tok = (t_token *)cur->data;
-        //     printf("Token: %-15s | Type: %-12s | Expandable: %s\n",
-        //         tok->value,
-        //         token_type_to_str(tok->type),
-        //         expendable_to_str(tok->expendable));
-        //     cur = cur->next;
-        // }
         cur = lexer->tokens;
-        start(create_pipeline(lexer->tokens));
-        free_lexer(lexer);
-        free(input);
+        g_shell.pipeline = create_pipeline(lexer->tokens);
+		free_lexer(lexer);
+		free(input);
+        start(g_shell.pipeline);
+		free(g_shell.pipeline);
     }
     return 0;
 }

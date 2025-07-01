@@ -15,9 +15,9 @@ int check_builtins(t_cmd *cmd)
 		redir(cmd->redir, cmd->redircount);
 	if (!cmd->argcount)
 		return (-1);
-	args = extract_args(cmd->args, cmd->argcount);
+	args = cmd->args;
 	i = 0;
-	while (i < 7 && _strcmp(args[0], names[i]))
+	while (i < 7 && _strcmp(*args, names[i]))
 		i++;
 	if (i == 7)
 		return (-1);
