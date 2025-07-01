@@ -1,12 +1,10 @@
+#include <lexer.h>
 #include <main.h>
-
-extern t_shell g_shell;
 
 void	ft_sigint_handler(int sig)
 {
 	(void)sig;
 	if (g_shell.in_execution)
-		// Execution: let child get SIGINT, print newline
 		write(1, "\n", 1);
 	else if (g_shell.heredoc_sigint)
 	{
