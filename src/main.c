@@ -145,7 +145,7 @@ int main(int ac, char **av, char **envp)
 		free_lexer(lexer);
 		free(input);
         start(g_shell.pipeline);
-		free(g_shell.pipeline);
+		free_pipeline(g_shell.pipeline);
     }
     return 0;
 }

@@ -17,7 +17,7 @@ void	cmd_pipe(t_cmd *cmd)
 		close(fdp[0]);
 		dup2(fdp[1], 1);
 		if (cmd->redircount)
-			redir(cmd->redir, cmd->redir);
+			redir(cmd->redir, cmd->redircount);
 		if (cmd->argcount)
 			exec(cmd->args);
 	}
