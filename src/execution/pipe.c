@@ -20,6 +20,7 @@ void	cmd_pipe(t_cmd *cmd)
 			redir(cmd->redir, cmd->redircount);
 		if (cmd->argcount)
 			exec(cmd->args);
+		fprintf(2, "test\n");
 	}
 	else
 	{

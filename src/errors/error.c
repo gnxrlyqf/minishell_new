@@ -8,7 +8,8 @@ void throw_err(t_err code, char *data)
 		syscall_fail,
 		cmd_enoent,
 		ambig_redir,
-		is_dir
+		is_dir,
+		open_fail
 	};
 	handlers[code](data);
 }

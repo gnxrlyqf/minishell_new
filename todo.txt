@@ -19,3 +19,5 @@
     > hi
     > hi
     > hi ( I had to force stop it)
+
+7. heredoc expansion 

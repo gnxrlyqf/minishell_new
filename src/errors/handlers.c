@@ -14,3 +14,11 @@ void syscall_fail(char *data)
 	free(data);
 	exit(1);
 }
+
+void open_fail(char *data)
+{
+	perror(data);
+	free_pipeline(g_shell.pipeline);
+	free_env(g_shell.env);
+	exit(1);
+}

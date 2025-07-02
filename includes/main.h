@@ -20,10 +20,10 @@ typedef enum e_err
 	ERR_NONE,
 	INV_TOKEN,
 	SYSCALL_FAIL,
-	PERM_DENIED,
 	CMD_ENOENT,
 	AMBIG_REDIR,
 	IS_DIR,
+	OPEN_FAIL,
 	MAX_HEREDOC
 } t_err;
 
@@ -42,10 +42,10 @@ typedef struct s_env
 
 typedef struct s_shell
 {
-	t_cmd *pipeline;
-	t_env *env;
-	int status;
-	char *chached_pwd;
+	t_cmd	*pipeline;
+	t_env	*env;
+	int		status;
+	char	*chached_pwd;
 	bool    in_execution; // Indicates if we are in a command execution context
     bool    heredoc_sigint; // Indicates if SIGINT was received during a heredoc
 	struct termios orig_termios; // Original terminal settings for restoring later
@@ -122,5 +122,6 @@ int		expand_status(t_list **list);
 void	free_arr(char **arr, int size);
 void	free_pipeline(t_cmd *pipeline);
 void	free_env(t_env *env);
+void	open_fail(char *data);
 
 # endif

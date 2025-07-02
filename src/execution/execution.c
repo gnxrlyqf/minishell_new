@@ -47,7 +47,11 @@ char	*check_path(char *path)
 		throw_err(IS_DIR, _strdup(path));
 	if (!access(path, F_OK | X_OK))
 		return (_strdup(path));
-	throw_err(PERM_DENIED, path);		
+	write(2, path, _strlen(path));
+	write(2, ": Permission denied\n", 21);
+	free_pipeline(g_shell.pipeline);
+	free_env(g_shell.env);
+	exit(126);
 	return (NULL);
 }
 
