@@ -123,9 +123,14 @@ int main(int ac, char **av, char **envp)
             write(1, "\nexit\n", 6);
             break;
         }
-        if (*input)
-            add_history(input);
-
+        // if (*input)
+        //     add_history(input);
+        if (*input == '\0')
+        {
+            free(input);
+            continue; // Skip empty input
+        }
+        add_history(input);
         lexer = init_lexer(input);
         if (!lexer)
         {
