@@ -15,29 +15,29 @@ int	expand_status(t_list **list)
 	return (2);
 }
 
-char *quotes(char *str)
+char    *quotes(char *str)
 {
-	t_list *list;
-	char *cpy;
-	char *ret;
+	char    *result;
+
+	int i;
+	int j;
 	int c;
-	
-	list = NULL;
+	result = malloc(ft_strlen(str) + 1);
+	i = 0;
+	j = 0;
 	c = 0;
-	cpy = str;
-	while (*cpy)
+	while (str[i])
 	{
-		if ((*cpy == '\'' || *cpy == '"') && c == 0)
-			c = *cpy;
-		else if (*cpy == c)
+		if ((str[i] == '\'' || str[i] == '"') && c)
+			c = str[i];
+		else if (str[i] == c)
 			c = 0;
 		else
-			add_node(&list, cpy);
-		cpy++;
+			result[j++] = str[i];
+		i++;
 	}
-	add_node(&list, cpy);
-	free_list(&list);
-	return (ret);
+	result[j] = '\0';
+	return (result);
 }
 
 char *quotes_expand(char *str)

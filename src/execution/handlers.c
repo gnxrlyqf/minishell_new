@@ -38,6 +38,18 @@ int start(t_cmd *pipeline)
 	return (g_shell.status);
 }
 
+void cleanup_hd(t_redir *redir, int size)
+{
+	int i;
+
+	i = -1;
+	while (++i < size)
+	{
+		if (redir->type == Here_doc)
+			unlink(redir->file);
+	}
+}
+
 int cmd(t_cmd *cmd)
 {
 	int pid;

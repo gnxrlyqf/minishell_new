@@ -52,12 +52,21 @@ char *check_heredoc(t_token_type type, t_token *token)
 {
 	char *eof;
 	char *path;
+	int expandable;
 
+	expandable = 1;
 	if (type != Here_doc)
 		return (quotes_expand(token->value));
-	// eof = quotes(token->value);
-	eof = token->value;
-	path = do_heredoc(eof, token->expendable);
+	if (*token->value == '"' || *token->value == '\'')
+	{
+		expandable = 0;
+		eof = quotes(token->value);
+	}
+	else
+		eof = token->value;
+	path = do_heredoc(eof, expandable);
+	if (!expandable)
+		free(eof);
 	return (path);
 }
 

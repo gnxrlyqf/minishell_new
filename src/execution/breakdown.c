@@ -67,10 +67,10 @@ void redir(t_redir *redir, int size)
 	int out;
 	char *file;
 
-	i = 0;
+	i = -1;
 	in = 0;
 	out = 1;
-	while (i < size)
+	while (++i < size)
 	{
 		file = redir[i].file;
 		if (redir[i].type == Redirect_In || redir[i].type == Here_doc)
@@ -79,7 +79,8 @@ void redir(t_redir *redir, int size)
 			out = my_open(file, O_WRONLY | O_TRUNC | O_CREAT);
 		if (redir[i].type == Append)
 			out = my_open(file, O_WRONLY | O_APPEND | O_CREAT);
-		i++;
+		if (redir[i].type == Here_doc)
+			unlink(file);
 	}
 	if (in != 0)
 		dup2(in, 0);
