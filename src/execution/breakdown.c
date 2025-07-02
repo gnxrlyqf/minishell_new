@@ -49,7 +49,7 @@ char *do_heredoc(char *eof, int expand)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || !_strncmp(line, eof, _strlen(line) - 1))
+		if (!line || !_strncmp(line, eof, _strlen(line)))
 			break ;
 		if (expand)
 			line = quotes_expand(line);
