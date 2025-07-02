@@ -27,8 +27,7 @@ void	setup_prompt_signals(void)
 	struct termios term;
 
 	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~ECHOCTL;
-	// term.c_lflag |= ECHOCTL; // Enable ECHOCTL to show ^C for SIGINT
+	term.c_lflag |= ECHOCTL; // Enable ECHOCTL to show ^C for SIGINT
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 
 	g_shell.in_execution = false;
