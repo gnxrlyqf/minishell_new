@@ -1,18 +1,17 @@
 #include <main.h>
-
 int my_open(char *path, int flags)
 {
 	int fd;
 
 	if (!*path || _strchr(path, ' ') || _strchr(path, '*'))
 		throw_err(AMBIG_REDIR, path);
-	if ((flags & O_RDONLY) && access(path, R_OK) == -1)
-		throw_err(PERM_DENIED, path);
-	if ((flags & O_WRONLY) && access(path, W_OK) == -1)
-		throw_err(PERM_DENIED, path);
+	// if ((flags & O_RDONLY) && access(path, R_OK) == -1)
+	// 	throw_err(PERM_DENIED, path);
+	// if ((flags & O_WRONLY) && access(path, W_OK) == -1)
+	// 	throw_err(PERM_DENIED, path);
 	fd = open(path, flags, 0644);
 	if (fd == -1)
-		throw_err(SYSCALL_FAIL, "open");
+		perror(path);	
 	return (fd);
 }
 

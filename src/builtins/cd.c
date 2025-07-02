@@ -19,6 +19,9 @@ int _chdir(char *dir)
 	free(dir);
 	pwd = getcwd(NULL, 0);
 	update_env(&g_shell.env, "PWD", pwd);
+	if (g_shell.chached_pwd)
+		free(g_shell.chached_pwd);
+	g_shell.chached_pwd = _strdup(pwd);
 	return (0);
 }
 
@@ -27,12 +30,12 @@ int cd(char **args)
 	char *dir;
 
 	args++;
-	if (!args)
+	if (!*args)
 	{
-		dir = quotes_expand(_strdup("$HOME"));
+		dir = quotes_expand("$HOME");
 		return (_chdir(dir));
 	}
-	if (args + 1)
+	if (*(args + 1))
 	{
 		write(2, "cd: too many arguments\n", 23);
 		return (1);

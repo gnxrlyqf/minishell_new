@@ -11,10 +11,10 @@ int check_builtins(t_cmd *cmd)
 		"echo", "cd", "pwd", "export", "unset", "env", "exit"
 	};
 
-	if (cmd->redircount)
-		redir(cmd->redir, cmd->redircount);
 	if (!cmd->argcount)
 		return (-1);
+	if (cmd->redircount)
+		redir(cmd->redir, cmd->redircount);
 	args = cmd->args;
 	i = 0;
 	while (i < 7 && _strcmp(*args, names[i]))
