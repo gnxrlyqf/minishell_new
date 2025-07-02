@@ -9,7 +9,8 @@ void unexpected_token(char *data)
 
 void syscall_fail(char *data)
 {
-	write(2, "Error: syscall fail: ", 22);
-	write(2, data, _strlen(data));
-	write(2, "\n", 1);
+	free_pipeline(g_shell.pipeline);
+	free_env(g_shell.env);
+	free(data);
+	exit(1);
 }

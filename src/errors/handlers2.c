@@ -5,11 +5,6 @@ void ambig_redir(char *data)
 	(void)data;
 }
 
-void empty_prompt(char *data)
-{
-	
-}
-
 void cmd_enoent(char *data)
 {
 	write(2, data, _strlen(data));
@@ -18,11 +13,6 @@ void cmd_enoent(char *data)
 	free_env(g_shell.env);
 	free(data);
 	exit(127);
-}
-
-void perm_denied(char *data)
-{
-	
 }
 
 void is_dir(char *data)

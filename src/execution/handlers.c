@@ -13,10 +13,7 @@ int do_pipeline(t_cmd *pipeline)
 	while (waitpid(-1, &status, 0) != -1)
 	{
 		if (WIFSIGNALED(status) && status == 2)
-		{
 			g_shell.status = 130;
-			// write(1, "\n", 1);
-		}
 		g_shell.status = status >> 8;
 	}
 	return (cmd(pipeline));

@@ -18,7 +18,6 @@
 typedef enum e_err
 {
 	ERR_NONE,
-	EMPTY_PROMPT,
 	INV_TOKEN,
 	SYSCALL_FAIL,
 	PERM_DENIED,
@@ -114,9 +113,7 @@ void	throw_err(t_err code, char *data);
 void	unexpected_token(char *data);
 void	syscall_fail(char *data);
 void	ambig_redir(char *data);
-void	empty_prompt(char *data);
 void	cmd_enoent(char *data);
-void	perm_denied(char *data);
 void	is_dir(char *data);
 int		start(t_cmd *pipeline);
 void	init_shell(char **envp);

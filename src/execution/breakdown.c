@@ -11,7 +11,7 @@ int my_open(char *path, int flags)
 	// 	throw_err(PERM_DENIED, path);
 	fd = open(path, flags, 0644);
 	if (fd == -1)
-		perror(path);	
+		perror(path);
 	return (fd);
 }
 

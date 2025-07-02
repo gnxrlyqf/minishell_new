@@ -13,13 +13,13 @@ int check_builtins(t_cmd *cmd)
 
 	if (!cmd->argcount)
 		return (-1);
-	if (cmd->redircount)
-		redir(cmd->redir, cmd->redircount);
 	args = cmd->args;
 	i = 0;
 	while (i < 7 && _strcmp(*args, names[i]))
 		i++;
 	if (i == 7)
 		return (-1);
+	if (cmd->redircount)
+		redir(cmd->redir, cmd->redircount);
 	return (funcs[i](args));
 }
