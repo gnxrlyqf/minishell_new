@@ -5,6 +5,8 @@ int _chdir(char *dir)
 	char *oldpwd;
 	char *pwd;
 
+	if (!*dir)
+		return (1);
 	oldpwd = getcwd(NULL, 0);
 	if (oldpwd)
 		update_env(&g_shell.env, "OLDPWD", oldpwd);

@@ -24,7 +24,7 @@ typedef enum e_err
 	AMBIG_REDIR,
 	IS_DIR,
 	OPEN_FAIL,
-	MAX_HEREDOC
+	FILE_ENOENT
 } t_err;
 
 typedef struct s_err
@@ -123,5 +123,6 @@ void	free_arr(char **arr, int size);
 void	free_pipeline(t_cmd *pipeline);
 void	free_env(t_env *env);
 void	open_fail(char *data);
+void	file_enoent(char *data);
 
 # endif

@@ -1,4 +1,6 @@
 #include <main.h>
+#include <errno.h>
+#include <_printfd.h>
 
 void ambig_redir(char *data)
 {
@@ -7,8 +9,7 @@ void ambig_redir(char *data)
 
 void cmd_enoent(char *data)
 {
-	write(2, data, _strlen(data));
-	write(2, ": command not found\n", 21);
+	_printfd(2, "%s: command not found\n", data);
 	free_pipeline(g_shell.pipeline);
 	free_env(g_shell.env);
 	free(data);
@@ -17,8 +18,7 @@ void cmd_enoent(char *data)
 
 void is_dir(char *data)
 {
-	write(2, data, _strlen(data));
-	write(2, ": is a directory\n", 17);
+	_printfd(2, "%s: is a directory\n", data);
 	free_pipeline(g_shell.pipeline);
 	free_env(g_shell.env);
 	free(data);

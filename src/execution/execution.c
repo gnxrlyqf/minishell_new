@@ -1,4 +1,6 @@
 #include <main.h>
+#include <_printfd.h>
+#include <errno.h>
 
 char	*mkpath(char *path, char *cmd)
 {
@@ -41,14 +43,15 @@ char	*check_path(char *path)
 {
 	struct stat st;
 	
+	if (!ft_strchr(path, '/'))
+		return (path);
 	if (stat(path, &st) == -1)
-		return (NULL);
+		throw_err(FILE_ENOENT, path);
 	if (S_ISDIR(st.st_mode))
 		throw_err(IS_DIR, _strdup(path));
 	if (!access(path, F_OK | X_OK))
 		return (_strdup(path));
-	write(2, path, _strlen(path));
-	write(2, ": Permission denied\n", 21);
+	_printfd(2, "%s: \n", strerror(errno));
 	free_pipeline(g_shell.pipeline);
 	free_env(g_shell.env);
 	exit(126);

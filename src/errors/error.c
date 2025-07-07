@@ -9,7 +9,8 @@ void throw_err(t_err code, char *data)
 		cmd_enoent,
 		ambig_redir,
 		is_dir,
-		open_fail
+		open_fail,
+		file_enoent
 	};
 	handlers[code](data);
 }

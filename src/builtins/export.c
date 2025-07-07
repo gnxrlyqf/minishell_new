@@ -1,4 +1,5 @@
 #include <main.h>
+#include <_printfd.h>
 
 int	_isalpha(int c)
 {
@@ -14,25 +15,28 @@ int validate_id(char *name)
 {
 	if (!_isalpha(*name) && *name != '_')
 		return (0);
-    name++;
-    while (*name && *name != '=')
-    {
-        if (!_isalnum(*name) && *name != '_')
-            return (0);
-        name++;
-    }
-    return (1);
+	name++;
+	while (*name && *name != '=')
+	{
+		if (!_isalnum(*name) && *name != '_')
+			return (0);
+		name++;
+	}
+	return (1);
 }
 
 int export_add(char **args)
 {
 	char *key;
-	t_env *node;
 
 	while (*args)
 	{
 		if (!validate_id(*args))
-			return (1);
+		{
+			_printfd(2, "export: %s: not a valid identifier\n", *args);
+			args++;
+			continue ;
+		}
 		key = *args;
 		while (**args && **args != '=')
 			(*args)++;
@@ -43,6 +47,7 @@ int export_add(char **args)
 			**args = 0;
 			update_env(&g_shell.env, _strdup(key), _strdup((*args) + 1));
 		}
+		*args = key;
 		args++;
 	}
 	return (0);
@@ -51,11 +56,11 @@ int export_add(char **args)
 int export(char **args)
 {
 	t_env *curr;
-	curr = g_shell.env;
-
+	
 	args++;
-	if (args)
+	if (*args)
 		return (export_add(args));
+	curr = g_shell.env;
 	while (curr)
 	{
 		printf("declare -x %s", curr->key);
