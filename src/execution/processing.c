@@ -2,16 +2,12 @@
 
 int	expand_status(t_list **list)
 {
-	int len;
 	char *status;
 
 	status = _itoa(g_shell.status);
-	len = 0;
 	while (*status)
-	{
-		len++;
-		add_node(list, status++);
-	}
+		add_node(list, _strdup(status++));
+	free(status);
 	return (2);
 }
 
@@ -52,16 +48,17 @@ char *quotes_expand(char *str)
 	cpy = str;
 	while (*cpy)
 	{
-		if (*cpy == '$' && c != '\'' && *(cpy + 1) >= 48)
+		if (*cpy == '$' && c != '\'' && *(cpy + 1))
+		{
 			cpy += fill_var(cpy + 1, &list);
+			continue ;
+		}
 		if ((*cpy == '\'' || *cpy == '"') && c == -1)
 			c = *cpy;
 		else if (*cpy == c)
 			c = -1;
 		else
 			add_node(&list, cpy);
-		if (!*cpy)
-			break ;
 		cpy++;
 	}
 	ret = make_str(list);

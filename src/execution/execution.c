@@ -36,7 +36,7 @@ char	*check_cwd(char *cmd, t_env *env)
 	if (!access(out, F_OK | X_OK))
 		return (out);
 	free(out);
-	return (_strdup(cmd));
+	return (cmd);
 }
 
 char	*check_path(char *path)

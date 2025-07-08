@@ -63,10 +63,10 @@ int fill_var(char *str, t_list **list)
 	char *value;
 	int varsize;
 
+	if (_strchr("'\"", *str))
+		return (1);
 	if (*str == '?')
 		return (expand_status(list));
-	if (_strchr(" '\"", *str))
-		return (1);
 	varname = _strndup(str, " $'\"");
 	varsize = _strlen(varname);
 	value = get_env_val(g_shell.env, varname);
@@ -76,7 +76,7 @@ int fill_var(char *str, t_list **list)
 			add_node(list, value++);
 		free(varname);
 	}
-	return (varsize);
+	return (varsize + 1);
 }
 
 char *make_str(t_list *list)

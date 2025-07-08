@@ -7,7 +7,7 @@ int echo(char **args)
 	dash_n = 0;
 	args++;
 	if (!*args)
-		return (write(1, "\n", 1));
+		return (printf("\n"));
 	while (!_strcmp(*args, "-n"))
 	{
 		dash_n = 1;	
@@ -15,11 +15,10 @@ int echo(char **args)
 	}
 	while (*args)
 	{
-		if (write(1, *args, _strlen(*args)) == -1)
-			throw_err(SYSCALL_FAIL, "write");
+		printf("%s ", *args);
 		args++;
 	}
 	if (!dash_n)
-		write(1, "\n", 1);
+		printf("\n");
 	return (0);
 }
