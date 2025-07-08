@@ -43,18 +43,19 @@ char	*check_path(char *path)
 {
 	struct stat st;
 	
-	if (!ft_strchr(path, '/'))
-		return (path);
-	if (stat(path, &st) == -1)
-		throw_err(FILE_ENOENT, path);
-	if (S_ISDIR(st.st_mode))
-		throw_err(IS_DIR, _strdup(path));
-	if (!access(path, F_OK | X_OK))
-		return (_strdup(path));
-	_printfd(2, "%s: \n", strerror(errno));
-	free_pipeline(g_shell.pipeline);
-	free_env(g_shell.env);
-	exit(126);
+	if (ft_strchr(path, '/'))
+	{
+		if (stat(path, &st) == -1)
+			throw_err(FILE_ENOENT, path);
+		if (S_ISDIR(st.st_mode))
+			throw_err(IS_DIR, _strdup(path));
+		if (!access(path, F_OK | X_OK))
+			return (_strdup(path));
+		_printfd(2, "%s: %s\n", path, strerror(errno));
+		free_pipeline(g_shell.pipeline);
+		free_env(g_shell.env);
+		exit(126);
+	}
 	return (NULL);
 }
 
@@ -98,5 +99,5 @@ void	exec(char **args)
 	envp = mkenvp(g_shell.env, &envsize);
 	execve(path, args, envp);
 	free_arr(envp, envsize);
-	throw_err(CMD_ENOENT, path);
+	throw_err(CMD_ENOENT, *args);
 }

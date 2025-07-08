@@ -69,17 +69,14 @@ int fill_var(char *str, t_list **list)
 		return (1);
 	varname = _strndup(str, " $'\"");
 	varsize = _strlen(varname);
-	curr = g_shell.env;
-	while (curr && _strcmp(curr->key, varname))
-		curr = curr->next;
-	if (curr)
+	value = get_env_val(g_shell.env, varname);
+	if (value)
 	{
-		value = curr->value;
 		while (*value)
 			add_node(list, value++);
 		free(varname);
 	}
-	return (varsize + 1);
+	return (varsize);
 }
 
 char *make_str(t_list *list)

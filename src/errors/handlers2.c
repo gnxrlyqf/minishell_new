@@ -12,7 +12,7 @@ void cmd_enoent(char *data)
 	_printfd(2, "%s: command not found\n", data);
 	free_pipeline(g_shell.pipeline);
 	free_env(g_shell.env);
-	free(data);
+	// free(data);
 	exit(127);
 }
 

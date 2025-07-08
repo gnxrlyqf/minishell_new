@@ -60,6 +60,8 @@ char *quotes_expand(char *str)
 			c = -1;
 		else
 			add_node(&list, cpy);
+		if (!*cpy)
+			break ;
 		cpy++;
 	}
 	ret = make_str(list);
