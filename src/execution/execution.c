@@ -27,16 +27,14 @@ char	*check_cwd(char *cmd, t_env *env)
 	t_env *curr;
 	char	*out;
 
-	curr = env;
-	while (curr && _strcmp(curr->key, "PWD"))
-		curr = curr->next;
+	curr = get_env(env, "PWD");
 	if (!curr)
 		return (_strdup(cmd));
 	out = mkpath(curr->value, cmd);
 	if (!access(out, F_OK | X_OK))
 		return (out);
 	free(out);
-	return (cmd);
+	return (_strdup(cmd));
 }
 
 char	*check_path(char *path)
@@ -99,5 +97,5 @@ void	exec(char **args)
 	envp = mkenvp(g_shell.env, &envsize);
 	execve(path, args, envp);
 	free_arr(envp, envsize);
-	throw_err(CMD_ENOENT, *args);
+	throw_err(CMD_ENOENT, path);
 }
