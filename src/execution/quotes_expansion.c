@@ -9,7 +9,7 @@ t_list	*add_node(t_list **head, void *value)
 	if (!new)
 		return (NULL);
 	new->next = NULL;
-	new->data = value;
+	new->data = (void *)_strdup(value);
 	if (!*head)
 	{
 		*head = new;
@@ -34,6 +34,7 @@ void	free_list(t_list **head)
 	{
 		temp = current;
 		current = current->next;
+		free(temp->data);
 		free(temp);
 	}
 	*head = NULL;
@@ -67,7 +68,7 @@ int fill_var(char *str, t_list **list)
 		return (1);
 	if (*str == '?')
 		return (expand_status(list));
-	varname = _strndup(str, " $'\"");
+	varname = _strddup(str, " $'\"");
 	varsize = _strlen(varname);
 	value = get_env_val(g_shell.env, varname);
 	if (value)

@@ -107,7 +107,7 @@ char	*_strchr(char *str, char c);
 char	*_strdup(char *src);
 int		_strlen(char *str);
 int		_strncmp(char *s1, char *s2, unsigned int n);
-char	*_strndup(char *str, char *set);
+char	*_strddup(char *str, char *set);
 int		_strcmp(char *s1, char *s2);
 void	throw_err(t_err code, char *data);
 void	unexpected_token(char *data);

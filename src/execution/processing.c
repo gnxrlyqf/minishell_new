@@ -3,10 +3,13 @@
 int	expand_status(t_list **list)
 {
 	char *status;
+	char *cpy;
 
 	status = _itoa(g_shell.status);
+	cpy = status;
 	while (*status)
-		add_node(list, _strdup(status++));
+		add_node(list, status++);
+	status = cpy;
 	free(status);
 	return (2);
 }
