@@ -59,13 +59,16 @@ int	list_len(t_list *list)
 
 int fill_var(char *str, t_list **list)
 {
-	t_env *curr;
 	char *varname;
 	char *value;
 	int varsize;
 
 	if (_strchr("'\"", *str))
+	{
+		if (!*(str + 1))
+			return (0);
 		return (1);
+	}
 	if (*str == '?')
 		return (expand_status(list));
 	varname = _strddup(str, " $'\"");

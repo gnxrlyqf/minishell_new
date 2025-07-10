@@ -28,13 +28,15 @@ int validate_id(char *name)
 int export_add(char **args)
 {
 	char *key;
+	int status;
 
+	status = 0;
 	while (*args)
 	{
 		if (!validate_id(*args))
 		{
-			_printfd(2, "export: %s: not a valid identifier\n", *args);
-			args++;
+			_printfd(2, "export: %s: not a valid identifier\n", *(args++));
+			status = 1;
 			continue ;
 		}
 		key = *args;
@@ -47,10 +49,9 @@ int export_add(char **args)
 			**args = 0;
 			update_env(&g_shell.env, _strdup(key), _strdup((*args) + 1));
 		}
-		*args = key;
-		args++;
+		*(args++) = key;
 	}
-	return (0);
+	return (status);
 }
 
 int export(char **args)

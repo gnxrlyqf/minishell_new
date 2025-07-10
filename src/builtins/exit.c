@@ -3,6 +3,8 @@
 
 int validate_status(char *str)
 {
+	if (_strchr("-+", *str))
+		str++;
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
@@ -21,7 +23,7 @@ int __exit(char **args)
 	if (*args)
 	{		
 		if (validate_status(*args))
-			status = ft_atoi(*args);
+			status = (unsigned char)(ft_atoi(*args));
 		else
 		{
 			_printfd(2, "exit: %s: numeric argument required\n", *args);

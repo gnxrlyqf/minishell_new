@@ -51,17 +51,16 @@ char *quotes_expand(char *str)
 	cpy = str;
 	while (*cpy)
 	{
-		if (*cpy == '$' && c != '\'' && *(cpy + 1))
-		{
+		if (*cpy == '$' && c != '\'' && *(cpy + 1) > 32)
 			cpy += fill_var(cpy + 1, &list);
-			continue ;
-		}
 		if ((*cpy == '\'' || *cpy == '"') && c == -1)
 			c = *cpy;
 		else if (*cpy == c)
 			c = -1;
 		else
 			add_node(&list, cpy);
+		if (!*cpy)
+			break ;
 		cpy++;
 	}
 	ret = make_str(list);

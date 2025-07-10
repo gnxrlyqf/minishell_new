@@ -15,8 +15,10 @@ int echo(char **args)
 	}
 	while (*args)
 	{
-		printf("%s ", *args);
+		printf("%s", *args);
 		args++;
+		if (*args)
+			printf(" ");
 	}
 	if (!dash_n)
 		printf("\n");
