@@ -92,7 +92,7 @@ void	exec(char **args)
 	int envsize;
 
 	if (!**args)
-		throw_err(CMD_ENOENT, "");
+		throw_err(CMD_ENOENT, _strdup(""));
 	path = which(*args, g_shell.env);
 	envp = mkenvp(g_shell.env, &envsize);
 	execve(path, args, envp);

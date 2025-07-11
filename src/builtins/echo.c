@@ -7,7 +7,10 @@ int echo(char **args)
 	dash_n = 0;
 	args++;
 	if (!*args)
-		return (printf("\n"));
+	{
+		printf("\n");
+		return (0);
+	}
 	while (!_strcmp(*args, "-n"))
 	{
 		dash_n = 1;	

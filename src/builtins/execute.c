@@ -20,7 +20,10 @@ int check_builtins(t_cmd *cmd)
 	if (i == 7)
 		return (-1);
 	if (cmd->redircount)
-		redir(cmd->redir, cmd->redircount);
+	{
+		if (redir_builtin(cmd->redir, cmd->redircount))
+			return (g_shell.status = 1, 1);
+	}
 	g_shell.status = funcs[i](args);
 	return (g_shell.status);
 }

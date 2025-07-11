@@ -7,8 +7,7 @@ void	cmd_pipe(t_cmd *cmd)
 	int		status;
 
 	status = 0;
-	if (pipe(fdp) == -1)
-		throw_err(SYSCALL_FAIL, "pipe");
+	pipe(fdp);
 	pid = fork();
 	if (pid == -1)
 		throw_err(SYSCALL_FAIL, "fork");
@@ -16,6 +15,9 @@ void	cmd_pipe(t_cmd *cmd)
 	{
 		close(fdp[0]);
 		dup2(fdp[1], 1);
+		status = check_builtins(cmd);
+		if (status != -1)
+			exit(status);
 		if (cmd->redircount)
 			redir(cmd->redir, cmd->redircount);
 		if (cmd->argcount)
