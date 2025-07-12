@@ -56,7 +56,7 @@ int	routine(void)
 		if (!input)
 		{
 			write(1, "\nexit\n", 6);
-			return (1);
+			return (g_shell.status);
 		}
 		if (*input == '\0')
 		{
