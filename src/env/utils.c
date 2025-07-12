@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:54:20 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:54:20 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 
 t_env	*add_node_env(t_env **head, char *name, char *value)
@@ -26,9 +38,9 @@ t_env	*add_node_env(t_env **head, char *name, char *value)
 	return (new);
 }
 
-char *get_env_val(t_env *env, char *key)
+char	*get_env_val(t_env *env, char *key)
 {
-	t_env *curr;
+	t_env	*curr;
 
 	curr = env;
 	while (curr)
@@ -40,21 +52,20 @@ char *get_env_val(t_env *env, char *key)
 	return (NULL);
 }
 
-t_env *get_env(t_env *env, char *key)
+t_env	*get_env(t_env *env, char *key)
 {
-	t_env *curr;
+	t_env	*curr;
 
 	curr = env;
 	while (curr && _strcmp(key, curr->key))
 		curr = curr->next;
-	// fprintf(2, "%s\n", curr->key);
 	return (curr);
 }
 
-int env_len(t_env *env)
+int	env_len(t_env *env)
 {
-	int size;
-	t_env *curr;
+	int		size;
+	t_env	*curr;
 
 	curr = env;
 	size = 0;
@@ -66,9 +77,9 @@ int env_len(t_env *env)
 	return (size);
 }
 
-t_env *update_env(t_env **env, char *key, char *value)
+t_env	*update_env(t_env **env, char *key, char *value)
 {
-	t_env *node;
+	t_env	*node;
 
 	node = get_env(*env, key);
 	if (!node)

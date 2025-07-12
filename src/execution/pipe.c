@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:54:30 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:54:31 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 
 void	cmd_pipe(t_cmd *cmd)
@@ -16,13 +28,11 @@ void	cmd_pipe(t_cmd *cmd)
 		close(fdp[0]);
 		dup2(fdp[1], 1);
 		status = check_builtins(cmd);
-		if (status != -1)
-			exit(status);
-		if (cmd->redircount)
+		if (cmd->redircount && status != -1)
 			redir(cmd->redir, cmd->redircount);
-		if (cmd->argcount)
+		if (cmd->argcount && status != -1)
 			exec(cmd->args);
-		fprintf(2, "test\n");
+		exit(status);
 	}
 	else
 	{

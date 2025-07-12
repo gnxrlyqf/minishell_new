@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   _printfd.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -18,6 +18,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdint.h>
+
+typedef unsigned int	t_uint;
 
 int		_printfd(int fd, const char *str, ...);
 int		_putstr(int fd, char *s);

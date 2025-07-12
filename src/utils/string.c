@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   string.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:55:47 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:55:48 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 
 char	*_strrstr_skip(char *str, char *sub)
 {
 	int	i;
-	int sublen;
+	int	sublen;
 
 	sublen = _strlen(sub);
 	i = _strlen(str);
@@ -20,8 +32,8 @@ char	*_strrstr_skip(char *str, char *sub)
 char	*_strstr_skip(char *str, char *sub)
 {
 	int	i;
-	int sublen;
-	int strlen;
+	int	sublen;
+	int	strlen;
 
 	sublen = _strlen(sub);
 	strlen = _strlen(str);
@@ -38,8 +50,8 @@ char	*_strstr_skip(char *str, char *sub)
 
 char	*_strtok(char *str, char *delims)
 {
-	int	i;
-	static char *save;
+	int			i;
+	static char	*save;
 
 	i = 0;
 	if (!str)

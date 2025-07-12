@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:55:40 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:55:41 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <lexer.h>
 #include <main.h>
 
@@ -8,13 +20,11 @@ void	ft_sigint_handler(int sig)
 		write(1, "\n", 1);
 	else if (g_shell.heredoc_sigint)
 	{
-		// Heredoc: just mark interrupted
 		write(1, "\n", 1);
 		g_shell.heredoc_sigint = true;
 	}
 	else
 	{
-		// Prompt: reset prompt
 		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
@@ -24,15 +34,13 @@ void	ft_sigint_handler(int sig)
 
 void	setup_prompt_signals(void)
 {
-	struct termios term;
+	struct termios	term;
 
 	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag |= ECHOCTL; // Enable ECHOCTL to show ^C for SIGINT
+	term.c_lflag |= ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-
 	g_shell.in_execution = false;
 	g_shell.heredoc_sigint = false;
-
 	signal(SIGINT, ft_sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }

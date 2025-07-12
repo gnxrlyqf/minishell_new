@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mkenv.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:54:17 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:54:18 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 
-char *mkvar(t_env *env)
+char	*mkvar(t_env *env)
 {
 	int		len;
 	char	*ret;
@@ -21,11 +33,11 @@ char *mkvar(t_env *env)
 	return (ret);
 }
 
-char **mkenvp(t_env *env, int *envsize)
+char	**mkenvp(t_env *env, int *envsize)
 {
-	int size;
-	t_env *curr;
-	char **envp;
+	int		size;
+	t_env	*curr;
+	char	**envp;
 
 	size = env_len(env);
 	envp = malloc(sizeof(char *) * (size + 1));

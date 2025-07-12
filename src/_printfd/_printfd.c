@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   _printfd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 17:27:57 by mchetoui          #+#    #+#             */
-/*   Updated: 2024/12/17 13:15:03 by mchetoui         ###   ########.fr       */
+/*   Updated: 2025/07/12 12:55:42 by mchetoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ int	handle_format(int fd, char c, va_list args)
 	if (c == 'd' || c == 'i')
 		return (putn_b(fd, (long)va_arg(args, int), "0123456789"));
 	if (c == 'u')
-		return (putn_b(fd, (long)va_arg(args, unsigned int), "0123456789"));
+		return (putn_b(fd, (long)va_arg(args, t_uint), "0123456789"));
 	if (c == 's')
 		return (_putstr(fd, va_arg(args, char *)));
 	if (c == 'x')
-		return (putn_b(fd, (unsigned int)va_arg(args, int), "0123456789abcdef"));
+		return (putn_b(fd, (t_uint)va_arg(args, int), "0123456789abcdef"));
 	if (c == 'X')
-		return (putn_b(fd, (unsigned int)va_arg(args, int), "0123456789ABCDEF"));
+		return (putn_b(fd, (t_uint)va_arg(args, int), "0123456789ABCDEF"));
 	if (c == 'p')
 		return (putp(fd, (uintptr_t)va_arg(args, void *)));
 	if (c == 'c')

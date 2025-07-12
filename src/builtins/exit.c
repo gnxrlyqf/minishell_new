@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:54:10 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:54:10 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 #include <_printfd.h>
 
-int validate_status(char *str)
+int	validate_status(char *str)
 {
 	if (_strchr("-+", *str))
 		str++;
@@ -14,14 +26,14 @@ int validate_status(char *str)
 	return (1);
 }
 
-int __exit(char **args)
+int	__exit(char **args)
 {
-	int status;
+	int	status;
 
 	status = g_shell.status;
 	args++;
 	if (*args)
-	{		
+	{
 		if (validate_status(*args))
 			status = (unsigned char)(ft_atoi(*args));
 		else

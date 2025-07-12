@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   processing.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:54:31 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:54:34 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 
 int	expand_status(t_list **list)
 {
-	char *status;
-	char *cpy;
+	char	*status;
+	char	*cpy;
 
 	status = _itoa(g_shell.status);
 	cpy = status;
@@ -14,13 +26,13 @@ int	expand_status(t_list **list)
 	return (2);
 }
 
-char    *quotes(char *str)
+char	*quotes(char *str)
 {
-	char    *result;
+	char	*result;
+	int		i;
+	int		j;
+	int		c;
 
-	int i;
-	int j;
-	int c;
 	result = malloc(ft_strlen(str) + 1);
 	i = 0;
 	j = 0;
@@ -39,13 +51,13 @@ char    *quotes(char *str)
 	return (result);
 }
 
-char *quotes_expand(char *str)
+char	*quotes_expand(char *str)
 {
-	t_list *list;
-	char *cpy;
-	char *ret;
-	int c;
-	
+	t_list	*list;
+	char	*cpy;
+	char	*ret;
+	int		c;
+
 	list = NULL;
 	c = -1;
 	cpy = str;
@@ -68,10 +80,10 @@ char *quotes_expand(char *str)
 	return (ret);
 }
 
-char **extract_args(t_token *tokens, int size)
+char	**extract_args(t_token *tokens, int size)
 {
-	int i;
-	char **arr;
+	int		i;
+	char	**arr;
 
 	arr = malloc(sizeof(char *) * (size + 1));
 	arr[size] = NULL;
@@ -79,4 +91,26 @@ char **extract_args(t_token *tokens, int size)
 	while (++i < size)
 		arr[i] = quotes_expand(tokens[i].value);
 	return (arr);
+}
+
+char	*do_heredoc(char *eof, int expand)
+{
+	int		fd;
+	char	*file;
+	char	*line;
+
+	file = mkfilename(eof);
+	fd = open(file, O_WRONLY | O_CREAT, 0644);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || !_strncmp(line, eof, _strlen(eof)))
+			break ;
+		if (expand)
+			line = quotes_expand(line);
+		write(fd, line, _strlen(line));
+		write(fd, "\n", 1);
+	}
+	close(fd);
+	return (file);
 }

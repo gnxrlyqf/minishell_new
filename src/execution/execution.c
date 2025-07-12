@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:54:27 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:54:28 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 #include <_printfd.h>
 #include <errno.h>
@@ -24,7 +36,7 @@ char	*mkpath(char *path, char *cmd)
 
 char	*check_cwd(char *cmd, t_env *env)
 {
-	t_env *curr;
+	t_env	*curr;
 	char	*out;
 
 	curr = get_env(env, "PWD");
@@ -39,8 +51,8 @@ char	*check_cwd(char *cmd, t_env *env)
 
 char	*check_path(char *path)
 {
-	struct stat st;
-	
+	struct stat	st;
+
 	if (ft_strchr(path, '/'))
 	{
 		if (stat(path, &st) == -1)
@@ -62,7 +74,7 @@ char	*which(char *cmd, t_env *env)
 	char	*out;
 	char	*path;
 	char	*dup;
-	
+
 	path = check_path(cmd);
 	if (path)
 		return (path);
@@ -87,9 +99,9 @@ char	*which(char *cmd, t_env *env)
 
 void	exec(char **args)
 {
-	char **envp;
-	char *path;
-	int envsize;
+	char	**envp;
+	char	*path;
+	int		envsize;
 
 	if (!**args)
 		throw_err(CMD_ENOENT, _strdup(""));

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quotes_expansion.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:54:35 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:54:36 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 
 t_list	*add_node(t_list **head, void *value)
@@ -57,11 +69,11 @@ int	list_len(t_list *list)
 	return (i);
 }
 
-int fill_var(char *str, t_list **list)
+int	fill_var(char *str, t_list **list)
 {
-	char *varname;
-	char *value;
-	int varsize;
+	char	*varname;
+	char	*value;
+	int		varsize;
 
 	if (_strchr("'\"", *str))
 	{
@@ -83,12 +95,12 @@ int fill_var(char *str, t_list **list)
 	return (varsize + 1);
 }
 
-char *make_str(t_list *list)
+char	*make_str(t_list *list)
 {
-	char *str;
-	int size;
-	t_list *curr;
-	int i;
+	char	*str;
+	int		size;
+	t_list	*curr;
+	int		i;
 
 	size = list_len(list);
 	str = malloc(size + 1);

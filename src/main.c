@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 13:31:16 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 13:31:19 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 #include <lexer.h>
 #include <readline/readline.h>
@@ -5,12 +17,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-t_shell g_shell;
+t_shell	g_shell;
 
-t_cmd *parse(char *input)
+t_cmd	*parse(char *input)
 {
-	t_lexer *lexer;
-	t_list *tokens;
+	t_lexer	*lexer;
+	t_list	*tokens;
 
 	lexer = init_lexer(input);
 	if (!lexer)
@@ -33,13 +45,13 @@ t_cmd *parse(char *input)
 	return (g_shell.pipeline);
 }
 
-int routine(void)
+int	routine(void)
 {
-	char *input;
+	char	*input;
 
 	while (1)
 	{
-		setup_prompt_signals(); // FOR SIGNALS !!
+		setup_prompt_signals();
 		input = readline("minishell> ");
 		if (!input)
 		{
@@ -49,7 +61,7 @@ int routine(void)
 		if (*input == '\0')
 		{
 			free(input);
-			continue; // Skip empty input
+			continue ;
 		}
 		add_history(input);
 		parse(input);
@@ -59,12 +71,12 @@ int routine(void)
 	return (0);
 }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
-	int status;
+	int	status;
 
-    init_shell(envp);
+	init_shell(envp);
 	status = routine();
 	free_env(g_shell.env);
-    return (status);
+	return (status);
 }

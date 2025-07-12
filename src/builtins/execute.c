@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:54:07 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:54:09 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 
-int check_builtins(t_cmd *cmd)
+int	check_builtins(t_cmd *cmd)
 {
 	char			**args;
-	int 			i;
+	int				i;
 	static builtin	funcs[] = {
 		echo, cd, pwd, export, unset, env, __exit
 	};

@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   breakdown.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:54:25 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:54:26 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <main.h>
 
-int my_open_builtin(char *path, int flags)
+int	my_open_builtin(char *path, int flags)
 {
-	int fd;
-	char *expanded;
+	int		fd;
+	char	*expanded;
 
 	expanded = quotes_expand(path);
 	if (!*expanded || _strchr(expanded, ' ') || _strchr(expanded, '*'))
@@ -20,10 +31,10 @@ int my_open_builtin(char *path, int flags)
 	return (fd);
 }
 
-int my_open(char *path, int flags)
+int	my_open(char *path, int flags)
 {
-	int fd;
-	char *expanded;
+	int		fd;
+	char	*expanded;
 
 	expanded = quotes_expand(path);
 	if (!*expanded || _strchr(expanded, ' ') || _strchr(expanded, '*'))
@@ -39,12 +50,12 @@ int my_open(char *path, int flags)
 	return (fd);
 }
 
-char *mkfilename(char *path)
+char	*mkfilename(char *path)
 {
-	char *start;
-	char *out;
-	int address;
-	int i;
+	char	*start;
+	char	*out;
+	int		address;
+	int		i;
 
 	start = "/tmp/.hd";
 	address = (int)path;
@@ -62,33 +73,11 @@ char *mkfilename(char *path)
 	return (out);
 }
 
-char *do_heredoc(char *eof, int expand)
+void	redir(t_redir *redir, int size)
 {
-	int fd;
-	char *file;
-	char *line;
-
-	file = mkfilename(eof);
-	fd = open(file, O_WRONLY | O_CREAT, 0644);
-	while (1)
-	{
-		line = readline("> ");
-		if (!line || !_strncmp(line, eof, _strlen(eof)))
-			break ;
-		if (expand)
-			line = quotes_expand(line);
-		write(fd, line, _strlen(line));
-		write(fd, "\n", 1);
-	}
-	close(fd);
-	return (file);
-}
-
-void redir(t_redir *redir, int size)
-{
-	int i;
-	int fd[2];
-	char *file;
+	int		i;
+	int		fd[2];
+	char	*file;
 
 	i = -1;
 	fd[0] = 0;
@@ -107,11 +96,11 @@ void redir(t_redir *redir, int size)
 	dup2(fd[1], 1);
 }
 
-int redir_builtin(t_redir *redir, int size)
+int	redir_builtin(t_redir *redir, int size)
 {
-	int i;
-	int fd[2];
-	char *file;
+	int		i;
+	int		fd[2];
+	char	*file;
 
 	i = -1;
 	fd[0] = 0;
@@ -131,12 +120,4 @@ int redir_builtin(t_redir *redir, int size)
 	dup2(fd[0], 0);
 	dup2(fd[1], 1);
 	return (0);
-}
-
-int my_dup2(int fd1, int fd2)
-{
-	dup2(fd1, fd2);
-	if (fd1 != 0 && fd1 != 1)
-		close(fd1);
-	return (fd2);
 }

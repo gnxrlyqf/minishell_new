@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:53:37 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:53:44 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 
-int echo(char **args)
+int	echo(char **args)
 {
-	int dash_n;
+	int	dash_n;
 
 	dash_n = 0;
 	args++;
@@ -13,7 +25,7 @@ int echo(char **args)
 	}
 	while (!_strcmp(*args, "-n"))
 	{
-		dash_n = 1;	
+		dash_n = 1;
 		args++;
 	}
 	while (*args)

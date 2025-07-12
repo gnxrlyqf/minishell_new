@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   resolve_tokens.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:55:39 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:55:39 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <lexer.h>
 
 t_token_type	get_token_type(t_state state)
@@ -118,7 +130,6 @@ void	resolve_tokens(t_lexer *lexer)
 	append_token(lexer, create_token("", End_of_file, Not_expendable));
 }
 
-// Synthax erros
 #define MAX_HEREDOCS 16
 
 static int	is_redirection(t_token_type type)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:55:49 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:55:49 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 
 char	*max_str(char *a, char *b)
@@ -7,16 +19,16 @@ char	*max_str(char *a, char *b)
 	return (b);
 }
 
-int skip(char *str, int i, char c, int rev)
+int	skip(char *str, int i, char c, int rev)
 {
-	int subshell;
-	int stop;
+	int	subshell;
+	int	stop;
 
 	stop = _strlen(str) * !rev - rev;
 	if (c == '\'' || c == '"')
 	{
 		while (i != stop && str[i] != c)
-			i += 1 - 2 * rev;		
+			i += 1 - 2 * rev;
 		return (i);
 	}
 	if (c == ')' || c == '(')
@@ -34,10 +46,10 @@ int skip(char *str, int i, char c, int rev)
 	return (i);
 }
 
-int wc(char *str, char c)
+int	wc(char *str, char c)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	count = 0;
 	i = 0;
@@ -59,7 +71,7 @@ int wc(char *str, char c)
 	return (count);
 }
 
-int is_empty(char *str)
+int	is_empty(char *str)
 {
 	if (!str)
 		return (1);
@@ -70,10 +82,10 @@ int is_empty(char *str)
 	return (0);
 }
 
-void init_shell(char **envp)
+void	init_shell(char **envp)
 {
 	g_shell.env = init_env(envp);
 	g_shell.status = 0;
 	g_shell.chached_pwd = NULL;
-	tcgetattr(STDIN_FILENO, &g_shell.orig_termios); // FOR SIGNAL HANDLING !!
+	tcgetattr(STDIN_FILENO, &g_shell.orig_termios);
 }

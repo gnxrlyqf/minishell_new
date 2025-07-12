@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:54:11 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:54:12 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <main.h>
 #include <_printfd.h>
 
@@ -11,7 +23,7 @@ int	_isalnum(int c)
 	return (_isalpha(c) || (c >= 48 && c <= 57));
 }
 
-int validate_id(char *name)
+int	validate_id(char *name)
 {
 	if (!_isalpha(*name) && *name != '_')
 		return (0);
@@ -25,10 +37,10 @@ int validate_id(char *name)
 	return (1);
 }
 
-int export_add(char **args)
+int	export_add(char **args)
 {
-	char *key;
-	int status;
+	char	*key;
+	int		status;
 
 	status = 0;
 	while (*args)
@@ -54,10 +66,10 @@ int export_add(char **args)
 	return (status);
 }
 
-int export(char **args)
+int	export(char **args)
 {
-	t_env *curr;
-	
+	t_env	*curr;
+
 	args++;
 	if (*args)
 		return (export_add(args));

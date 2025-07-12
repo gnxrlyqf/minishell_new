@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bridge.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 12:55:30 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 12:55:31 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <lexer.h>
 #include <main.h>
 
-void count_words(t_list *list, int *args, int *redir)
+void	count_words(t_list *list, int *args, int *redir)
 {
-	t_list *curr;
-	t_token *tok;
+	t_list	*curr;
+	t_token	*tok;
 
 	*args = 0;
 	*redir = 0;
@@ -25,11 +37,11 @@ void count_words(t_list *list, int *args, int *redir)
 	}
 }
 
-t_cmd *init_cmd(t_list *list)
+t_cmd	*init_cmd(t_list *list)
 {
-	t_cmd *cmd;
-	int argcount;
-	int redircount;
+	t_cmd	*cmd;
+	int		argcount;
+	int		redircount;
 
 	count_words(list, &argcount, &redircount);
 	cmd = malloc(sizeof(t_cmd));
@@ -48,11 +60,11 @@ t_cmd *init_cmd(t_list *list)
 	return (cmd);
 }
 
-char *check_heredoc(t_token_type type, t_token *token)
+char	*check_heredoc(t_token_type type, t_token *token)
 {
-	char *eof;
-	char *path;
-	int expandable;
+	char	*eof;
+	char	*path;
+	int		expandable;
 
 	expandable = 1;
 	if (type != Here_doc)
@@ -70,11 +82,11 @@ char *check_heredoc(t_token_type type, t_token *token)
 	return (path);
 }
 
-t_cmd *create_cmd(t_list **list, t_list *cpy)
+t_cmd	*create_cmd(t_list **list, t_list *cpy)
 {
-	t_token *tok;
-	t_cmd *cmd;
-	
+	t_token	*tok;
+	t_cmd	*cmd;
+
 	cmd = init_cmd(cpy);
 	while (*list)
 	{
@@ -97,29 +109,11 @@ t_cmd *create_cmd(t_list **list, t_list *cpy)
 	return (cmd);
 }
 
-void print_cmd(t_cmd *cmd)
+t_cmd	*create_pipeline(t_list *list)
 {
-	int i;
-	t_cmd *curr;
-
-	curr = cmd;
-	while (curr)
-	{
-		i = 0;
-		while (i < curr->argcount)
-			printf("arg: %s\n", curr->args[i++]);
-		i = 0;
-		while (i < curr->redircount)
-			printf("redir: %s - %s\n", token_type_to_str(curr->redir[i].type), curr->redir[i++].file);
-		curr = curr->next;
-	}
-}
-
-t_cmd *create_pipeline(t_list *list)
-{
-	t_list *cpy;
-	t_cmd *head;
-	t_cmd *cmd;
+	t_list	*cpy;
+	t_cmd	*head;
+	t_cmd	*cmd;
 
 	cpy = list;
 	head = create_cmd(&list, cpy);

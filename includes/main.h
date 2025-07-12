@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 13:32:44 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/07/12 13:32:48 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MAIN_H
 # define MAIN_H
 
@@ -13,7 +25,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <termios.h>
-#include <signal.h>
+# include <signal.h>
 
 typedef enum e_err
 {
@@ -25,37 +37,37 @@ typedef enum e_err
 	IS_DIR,
 	OPEN_FAIL,
 	FILE_ENOENT
-} t_err;
+}	t_err;
 
 typedef struct s_err
 {
-	t_err code;
-	void *data;
-} t_error;
+	t_err	code;
+	void	*data;
+}	t_error;
 
 typedef struct s_env
 {
-	struct s_env *next;
-	char *key;
-	char *value;
-} t_env;
+	struct s_env	*next;
+	char			*key;
+	char			*value;
+}	t_env;
 
 typedef struct s_shell
 {
-	t_cmd	*pipeline;
-	t_env	*env;
-	int		status;
-	char	*chached_pwd;
-	bool    in_execution; // Indicates if we are in a command execution context
-    bool    heredoc_sigint; // Indicates if SIGINT was received during a heredoc
-	struct termios orig_termios; // Original terminal settings for restoring later
-} t_shell;
+	t_cmd			*pipeline;
+	t_env			*env;
+	int				status;
+	char			*chached_pwd;
+	bool			in_execution;
+	bool			heredoc_sigint;
+	struct termios	orig_termios;
+}	t_shell;
 
-typedef void (*error_handler)(char *data);
-typedef int (*builtin)(char **args);
+typedef void	(*t_error_handler)(char *data);
+typedef int		(*t_builtin)(char **args);
 
-extern t_shell g_shell;
-	
+extern t_shell	g_shell;
+
 t_list	*add_node(t_list **head, void *value);
 void	free_list(t_list **head);
 int		list_len(t_list *list);
@@ -120,7 +132,7 @@ void	cmd_enoent(char *data);
 void	is_dir(char *data);
 int		start(t_cmd *pipeline);
 void	init_shell(char **envp);
-char    *_itoa(int n);
+char	*_itoa(int n);
 int		expand_status(t_list **list);
 void	free_arr(char **arr, int size);
 void	free_pipeline(t_cmd *pipeline);
@@ -128,4 +140,4 @@ void	free_env(t_env *env);
 void	open_fail(char *data);
 void	file_enoent(char *data);
 
-# endif
+#endif
