@@ -21,6 +21,7 @@ void open_fail(char *data)
 	perror(data);
 	free_pipeline(g_shell.pipeline);
 	free_env(g_shell.env);
+	free(data);
 	exit(1);
 }
 

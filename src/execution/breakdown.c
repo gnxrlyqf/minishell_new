@@ -1,26 +1,41 @@
+
 #include <main.h>
 
 int my_open_builtin(char *path, int flags)
 {
 	int fd;
+	char *expanded;
 
-	if (!*path || _strchr(path, ' ') || _strchr(path, '*'))
-		throw_err(AMBIG_REDIR, path);
-	fd = open(path, flags, 0644);
+	expanded = quotes_expand(path);
+	if (!*expanded || _strchr(expanded, ' ') || _strchr(expanded, '*'))
+	{
+		_printfd(2, "%s: ambiguous redirect\n", path);
+		free(expanded);
+		return (-1);
+	}
+	fd = open(expanded, flags, 0644);
 	if (fd == -1)
-		perror(path);
+		perror(expanded);
+	free(expanded);
 	return (fd);
 }
 
 int my_open(char *path, int flags)
 {
 	int fd;
+	char *expanded;
 
-	if (!*path || _strchr(path, ' ') || _strchr(path, '*'))
+	expanded = quotes_expand(path);
+	if (!*expanded || _strchr(expanded, ' ') || _strchr(expanded, '*'))
+	{
 		throw_err(AMBIG_REDIR, path);
-	fd = open(path, flags, 0644);
+		free(expanded);
+		exit(1);
+	}
+	fd = open(expanded, flags, 0644);
 	if (fd == -1)
-		throw_err(OPEN_FAIL, path);
+		throw_err(OPEN_FAIL, expanded);
+	free(expanded);
 	return (fd);
 }
 

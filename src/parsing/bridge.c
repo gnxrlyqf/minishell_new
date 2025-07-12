@@ -56,7 +56,7 @@ char *check_heredoc(t_token_type type, t_token *token)
 
 	expandable = 1;
 	if (type != Here_doc)
-		return (quotes_expand(token->value));
+		return (_strdup(token->value));
 	if (*token->value == '"' || *token->value == '\'')
 	{
 		expandable = 0;

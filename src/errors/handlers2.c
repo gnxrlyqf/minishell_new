@@ -4,7 +4,9 @@
 
 void ambig_redir(char *data)
 {
-	(void)data;
+	_printfd(2, "%s: ambiguous redirect\n", data);
+	free_pipeline(g_shell.pipeline);
+	free_env(g_shell.env);
 }
 
 void cmd_enoent(char *data)
