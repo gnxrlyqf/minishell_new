@@ -1,3 +1,6 @@
-7. ambiguous redirect
+1.{
+	exit error message priority
+	dont exit if too many args and first is numeric
+}
 
-15. To be continued...
+3. echo -n

@@ -94,7 +94,7 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy)
 		if (tok->type == Pipe || tok->type == End_of_file)
 			break ;
 		if (tok->type == Word)
-			*(cmd->args++) = quotes_expand(tok->value);
+			*(cmd->args++) = quotes_expand(tok->value, NULL);
 		else if (tok->type >= 2)
 		{
 			cmd->redir->type = tok->type;

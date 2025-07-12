@@ -69,20 +69,18 @@ int	list_len(t_list *list)
 	return (i);
 }
 
-int	fill_var(char *str, t_list **list)
+int	fill_var(char *str, t_list **list, int *expanded)
 {
 	char	*varname;
 	char	*value;
 	int		varsize;
 
-	if (_strchr("'\"", *str))
-	{
-		if (!*(str + 1))
-			return (0);
-		return (1);
-	}
 	if (*str == '?')
+	{
+		if (expanded)
+			*expanded = 1;
 		return (expand_status(list));
+	}
 	varname = _strddup(str, " $'\"");
 	varsize = _strlen(varname);
 	value = get_env_val(g_shell.env, varname);
@@ -92,6 +90,8 @@ int	fill_var(char *str, t_list **list)
 			add_node(list, value++);
 		free(varname);
 	}
+	if (expanded)
+		*expanded = 1;
 	return (varsize + 1);
 }
 

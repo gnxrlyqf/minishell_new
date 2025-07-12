@@ -11,54 +11,59 @@
 /* ************************************************************************** */
 
 #include <main.h>
+#include <_printfd.h>
 
 int	my_open_builtin(char *path, int flags)
 {
 	int		fd;
-	char	*expanded;
+	char	*ex;
+	int expanded;
 
-	expanded = quotes_expand(path);
-	if (!*expanded || _strchr(expanded, ' ') || _strchr(expanded, '*'))
+	expanded = 0;
+	ex = quotes_expand(path, &expanded);
+	if (expanded && (!*ex || _strchr(ex, ' ') || _strchr(ex, '*')))
 	{
 		_printfd(2, "%s: ambiguous redirect\n", path);
-		free(expanded);
+		free(ex);
 		return (-1);
 	}
-	fd = open(expanded, flags, 0644);
+	fd = open(ex, flags, 0644);
 	if (fd == -1)
-		perror(expanded);
-	free(expanded);
+		perror(ex);
+	free(ex);
 	return (fd);
 }
 
 int	my_open(char *path, int flags)
 {
 	int		fd;
-	char	*expanded;
+	char	*ex;
+	int expanded;
 
-	expanded = quotes_expand(path);
-	if (!*expanded || _strchr(expanded, ' ') || _strchr(expanded, '*'))
+	expanded = 0;
+	ex = quotes_expand(path, &expanded);
+	if (expanded && (!*ex || _strchr(ex, ' ') || _strchr(ex, '*')))
 	{
 		throw_err(AMBIG_REDIR, path);
-		free(expanded);
+		free(ex);
 		exit(1);
 	}
-	fd = open(expanded, flags, 0644);
+	fd = open(ex, flags, 0644);
 	if (fd == -1)
-		throw_err(OPEN_FAIL, expanded);
-	free(expanded);
+		throw_err(OPEN_FAIL, ex);
+	free(ex);
 	return (fd);
 }
 
 char	*mkfilename(char *path)
 {
-	char	*start;
-	char	*out;
-	int		address;
-	int		i;
+	char			*start;
+	char			*out;
+	unsigned long	address;
+	int				i;
 
 	start = "/tmp/.hd";
-	address = (int)path;
+	address = (unsigned long)path;
 	out = malloc(17);
 	i = -1;
 	while (++i < 8)

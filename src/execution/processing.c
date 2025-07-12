@@ -51,47 +51,49 @@ char	*quotes(char *str)
 	return (result);
 }
 
-char	*quotes_expand(char *str)
+int		expandable(char *str)
+{
+	str++;
+	if (!*str)
+		return (0);
+	if (!_isalpha(*str) && *str != '_')
+		return (0);
+	if (_strchr("'\"", *str))
+		return (*(str + 1) != 0);
+	return (1);
+}
+
+char	*quotes_expand(char *str, int *expanded)
 {
 	t_list	*list;
-	char	*cpy;
 	char	*ret;
 	int		c;
 
 	list = NULL;
 	c = -1;
-	cpy = str;
-	while (*cpy)
+	ret = str;
+	while (*str)
 	{
-		if (*cpy == '$' && c != '\'' && *(cpy + 1) > 32)
-			cpy += fill_var(cpy + 1, &list);
-		if ((*cpy == '\'' || *cpy == '"') && c == -1)
-			c = *cpy;
-		else if (*cpy == c)
+		if (*str == '$' && c != '\'' && expandable(str))
+		{
+			str += fill_var(str + 1, &list, expanded);
+			continue ;
+		}
+		if ((*str == '\'' || *str == '"') && c == -1)
+			c = *str;
+		else if (*str == c)
 			c = -1;
 		else
-			add_node(&list, cpy);
-		if (!*cpy)
+			add_node(&list, str);
+		if (!*str)
 			break ;
-		cpy++;
+		str++;
 	}
 	ret = make_str(list);
 	free_list(&list);
 	return (ret);
 }
 
-char	**extract_args(t_token *tokens, int size)
-{
-	int		i;
-	char	**arr;
-
-	arr = malloc(sizeof(char *) * (size + 1));
-	arr[size] = NULL;
-	i = -1;
-	while (++i < size)
-		arr[i] = quotes_expand(tokens[i].value);
-	return (arr);
-}
 
 char	*do_heredoc(char *eof, int expand)
 {
@@ -107,7 +109,7 @@ char	*do_heredoc(char *eof, int expand)
 		if (!line || !_strncmp(line, eof, _strlen(eof)))
 			break ;
 		if (expand)
-			line = quotes_expand(line);
+			line = quotes_expand(line, NULL);
 		write(fd, line, _strlen(line));
 		write(fd, "\n", 1);
 	}

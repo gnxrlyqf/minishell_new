@@ -14,7 +14,7 @@
 
 void	throw_err(t_err code, char *data)
 {
-	static error_handler	handlers[] = {
+	static t_error_handler	handlers[] = {
 		NULL,
 		unexpected_token,
 		syscall_fail,

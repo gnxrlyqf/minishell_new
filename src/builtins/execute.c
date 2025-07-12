@@ -16,7 +16,7 @@ int	check_builtins(t_cmd *cmd)
 {
 	char			**args;
 	int				i;
-	static builtin	funcs[] = {
+	static t_builtin	funcs[] = {
 		echo, cd, pwd, export, unset, env, __exit
 	};
 	static char		*names[] = {

@@ -14,6 +14,8 @@
 		"utility": "c",
 		"stat.h": "c",
 		"readline.h": "c",
-		"history.h": "c"
+		"history.h": "c",
+		"text_encoding": "c",
+		"typeinfo": "c"
 	}
 }
