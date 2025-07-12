@@ -1,6 +1,1 @@
-1.{
-	exit error message priority
-	dont exit if too many args and first is numeric
-}
-
 3. echo -n

@@ -12,6 +12,31 @@
 
 #include <main.h>
 
+int check_flags(char **args, int *dash_n)
+{
+	int i;
+	char *arg;
+
+	i = 0;
+	while (*args)
+	{
+		arg = *args;
+		if (*arg != '-')
+			return (i);
+		arg++;
+		while (*arg)
+		{
+			if (*arg != 'n')
+				return (i);
+			arg++;
+		}
+		i++;
+		*dash_n = 1;
+		args++;
+	}
+	return (i);
+}
+
 int	echo(char **args)
 {
 	int	dash_n;
@@ -23,11 +48,7 @@ int	echo(char **args)
 		printf("\n");
 		return (0);
 	}
-	while (!_strcmp(*args, "-n"))
-	{
-		dash_n = 1;
-		args++;
-	}
+	args += check_flags(args, &dash_n);
 	while (*args)
 	{
 		printf("%s", *args);
