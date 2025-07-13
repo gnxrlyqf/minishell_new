@@ -81,7 +81,7 @@ int	fill_var(char *str, t_list **list, int *expanded)
 			*expanded = 1;
 		return (expand_status(list));
 	}
-	varname = _strddup(str, " $'\"");
+	varname = _strddup(str, " $`.-=+!@#%^&*()=+-,.<>/;:[|]{}~\t\n\\\"'");
 	varsize = _strlen(varname);
 	value = get_env_val(g_shell.env, varname);
 	if (value)

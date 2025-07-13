@@ -56,10 +56,10 @@ int		expandable(char *str)
 	str++;
 	if (!*str)
 		return (0);
-	if (!_isalpha(*str) && *str != '_')
-		return (0);
 	if (_strchr("'\"", *str))
-		return (*(str + 1) != 0);
+		return (1);
+	if (!_isalpha(*str) && *str != '_' && *str != '?')
+		return (0);
 	return (1);
 }
 
