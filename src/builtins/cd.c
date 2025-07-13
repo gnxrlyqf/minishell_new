@@ -46,7 +46,7 @@ int	cd(char **args)
 	args++;
 	if (!*args)
 	{
-		dir = quotes_expand("$HOME");
+		dir = quotes_expand("$HOME", NULL);
 		return (_chdir(dir));
 	}
 	if (*(args + 1))
@@ -54,6 +54,6 @@ int	cd(char **args)
 		write(2, "cd: too many arguments\n", 23);
 		return (1);
 	}
-	dir = quotes_expand(*args);
+	dir = quotes_expand(*args, NULL);
 	return (_chdir(dir));
 }

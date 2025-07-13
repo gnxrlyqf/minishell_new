@@ -12,6 +12,19 @@
 
 #include <main.h>
 
+void	exec_pipe(t_cmd *cmd)
+{
+	int status;
+
+	status = check_builtins(cmd);
+	if (status != -1)
+		exit(status);
+	if (cmd->redircount)
+		redir(cmd->redir, cmd->redircount);
+	if (cmd->argcount)
+		exec(cmd->args);
+}
+
 void	cmd_pipe(t_cmd *cmd)
 {
 	int		fdp[2];
@@ -27,12 +40,7 @@ void	cmd_pipe(t_cmd *cmd)
 	{
 		close(fdp[0]);
 		dup2(fdp[1], 1);
-		status = check_builtins(cmd);
-		if (cmd->redircount && status != -1)
-			redir(cmd->redir, cmd->redircount);
-		if (cmd->argcount && status != -1)
-			exec(cmd->args);
-		exit(status);
+		exec_pipe(cmd);
 	}
 	else
 	{
