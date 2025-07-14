@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <main.h>
+#include <_printfd.h>
 
 int	expand_status(t_list **list)
 {
@@ -97,22 +98,29 @@ char	*quotes_expand(char *str, int *expanded)
 
 char	*do_heredoc(char *eof, int expand)
 {
+	int		pid;
 	int		fd;
 	char	*file;
 	char	*line;
 
 	file = mkfilename(eof);
 	fd = open(file, O_WRONLY | O_CREAT, 0644);
-	while (1)
+	pid = fork();
+	if (pid)
+		waitpid(pid, NULL, 0);
+	while (!pid)
 	{
 		line = readline("> ");
 		if (!line || !_strncmp(line, eof, _strlen(eof)))
 			break ;
 		if (expand)
 			line = quotes_expand(line, NULL);
-		write(fd, line, _strlen(line));
-		write(fd, "\n", 1);
+		_printfd(fd, "%s\n", line);
 	}
-	close(fd);
-	return (file);
+	if (!pid && !line)
+		_printfd(1, "minishell: warning: here-document\
+ delimited by end-of-file (wanted `%s')\n", eof);
+	if (!pid)
+		exit(0);
+	return (close(fd), file);
 }

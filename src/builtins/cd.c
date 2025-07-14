@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <main.h>
+#include <_printfd.h>
 
 int	_chdir(char *dir)
 {
@@ -25,9 +26,7 @@ int	_chdir(char *dir)
 	if (chdir(dir) == -1)
 	{
 		g_shell.status = 1;
-		write(2, "cd: ", 4);
-		write(2, dir, _strlen(dir));
-		write(2, ": No such file or directory\n", 28);
+		_printfd(2, "cd: %s: No such file or directory\n", dir);
 		return (1);
 	}
 	free(dir);
