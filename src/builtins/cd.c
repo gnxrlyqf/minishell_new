@@ -33,7 +33,7 @@ int	_chdir(char *dir)
 	pwd = getcwd(NULL, 0);
 	update_env(&g_shell.env, "PWD", pwd);
 	if (g_shell.chached_pwd)
-		free(g_shell.chached_pwd);
+		cleanup(4);
 	g_shell.chached_pwd = _strdup(pwd);
 	return (0);
 }

@@ -74,6 +74,7 @@ char	*mkfilename(char *path)
 		address /= 10;
 		i++;
 	}
+	_printfd(2, "%s\n", out);
 	out[i] = 0;
 	return (out);
 }

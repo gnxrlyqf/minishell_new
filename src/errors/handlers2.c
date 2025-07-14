@@ -17,15 +17,13 @@
 void	ambig_redir(char *data)
 {
 	_printfd(2, "%s: ambiguous redirect\n", data);
-	free_pipeline(g_shell.pipeline);
-	free_env(g_shell.env);
+	cleanup(7);
 }
 
 void	cmd_enoent(char *data)
 {
 	_printfd(2, "%s: command not found\n", data);
-	free_pipeline(g_shell.pipeline);
-	free_env(g_shell.env);
+	cleanup(7);
 	free(data);
 	exit(127);
 }
@@ -33,8 +31,7 @@ void	cmd_enoent(char *data)
 void	is_dir(char *data)
 {
 	_printfd(2, "%s: is a directory\n", data);
-	free_pipeline(g_shell.pipeline);
-	free_env(g_shell.env);
+	cleanup(7);
 	free(data);
 	exit(126);
 }

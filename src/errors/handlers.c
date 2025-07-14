@@ -22,8 +22,7 @@ void	unexpected_token(char *data)
 
 void	syscall_fail(char *data)
 {
-	free_pipeline(g_shell.pipeline);
-	free_env(g_shell.env);
+	cleanup(7);
 	free(data);
 	exit(1);
 }
@@ -31,8 +30,7 @@ void	syscall_fail(char *data)
 void	open_fail(char *data)
 {
 	perror(data);
-	free_pipeline(g_shell.pipeline);
-	free_env(g_shell.env);
+	cleanup(7);
 	free(data);
 	exit(1);
 }
@@ -40,7 +38,6 @@ void	open_fail(char *data)
 void	file_enoent(char *data)
 {
 	_printfd(2, "%s: No such file or directory\n", data);
-	free_pipeline(g_shell.pipeline);
-	free_env(g_shell.env);
+	cleanup(7);
 	exit(127);
 }

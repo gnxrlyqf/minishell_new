@@ -62,8 +62,7 @@ char	*check_path(char *path)
 		if (!access(path, F_OK | X_OK))
 			return (_strdup(path));
 		_printfd(2, "%s: %s\n", path, strerror(errno));
-		free_pipeline(g_shell.pipeline);
-		free_env(g_shell.env);
+		cleanup(3);
 		exit(126);
 	}
 	return (NULL);

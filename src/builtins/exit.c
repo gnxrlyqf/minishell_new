@@ -39,8 +39,7 @@ int	__exit(char **args)
 		else
 		{
 			_printfd(2, "exit: %s: numeric argument required\n", *args);
-			free_pipeline(g_shell.pipeline);
-			free_env(g_shell.env);
+			cleanup(3);
 			exit(2);
 		}
 		args++;
@@ -50,7 +49,6 @@ int	__exit(char **args)
 			status = 1;
 		}
 	}
-	free_pipeline(g_shell.pipeline);
-	free_env(g_shell.env);
+	cleanup(3);
 	exit(status);
 }

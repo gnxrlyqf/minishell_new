@@ -19,8 +19,7 @@ void	exec_pipe(t_cmd *cmd)
 	status = check_builtins(cmd);
 	if (status != -1)
 	{
-		free_pipeline(g_shell.pipeline);
-		free_env(g_shell.env);
+		cleanup(3);
 		exit(status);
 	}
 	if (cmd->redircount)

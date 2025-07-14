@@ -87,7 +87,6 @@ char	*which(char *cmd, t_env *env);
 void	exec(char **args);
 int		cmd(t_cmd *cmd);
 void	cmd_pipe(t_cmd *cmd);
-char	**extract_args(t_token *tokens, int size);
 t_env	*init_env(char **envp);
 char	*mkvar(t_env *env);
 char	**mkenvp(t_env *env, int *envsize);
@@ -111,11 +110,6 @@ int		pwd(char **args);
 int		_chdir(char *dir);
 int		cd(char **args);
 char	*max_str(char *a, char *b);
-int		skip(char *str, int i, char c, int rev);
-int		wc(char *str, char c);
-int		is_empty(char *str);
-char	*_strrstr_skip(char *str, char *sub);
-char	*_strstr_skip(char *str, char *sub);
 char	*_strtok(char *str, char *delims);
 char	*_strchr(char *str, char c);
 char	*_strdup(char *src);
@@ -138,5 +132,6 @@ void	free_pipeline(t_cmd *pipeline);
 void	free_env(t_env *env);
 void	open_fail(char *data);
 void	file_enoent(char *data);
+void	cleanup(int n);
 
 #endif

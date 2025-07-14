@@ -12,42 +12,6 @@
 
 #include <main.h>
 
-char	*_strrstr_skip(char *str, char *sub)
-{
-	int	i;
-	int	sublen;
-
-	sublen = _strlen(sub);
-	i = _strlen(str);
-	while (--i >= 0)
-	{
-		if (_strchr("'\")", str[i]))
-			i = skip(str, i - 1, str[i], 1);
-		if (!_strncmp(str + i, sub, sublen))
-			return (str + i);
-	}
-	return (NULL);
-}
-
-char	*_strstr_skip(char *str, char *sub)
-{
-	int	i;
-	int	sublen;
-	int	strlen;
-
-	sublen = _strlen(sub);
-	strlen = _strlen(str);
-	i = -1;
-	while (++i < strlen)
-	{
-		if (_strchr("'\"(", str[i]))
-			i = skip(str, i + 1, str[i], 0);
-		if (!_strncmp(str + i, sub, sublen))
-			return (str + i);
-	}
-	return (NULL);
-}
-
 char	*_strtok(char *str, char *delims)
 {
 	int			i;
@@ -86,7 +50,10 @@ char	*_strdup(char *src)
 
 	new = malloc((_strlen(src) + 1) * sizeof(char));
 	if (!src || !new)
+	{
+		free(new);
 		return (NULL);
+	}
 	i = -1;
 	while (src[++i])
 		new[i] = src[i];
