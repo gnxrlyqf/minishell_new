@@ -36,7 +36,18 @@ int	start(t_cmd *pipeline)
 {
 	int	fds[3];
 	int	status;
+	t_cmd	*cmd_iter;
 
+	cmd_iter = pipeline;
+	while (cmd_iter)
+	{
+		if (cmd_iter->heredoc_interrupted)
+		{
+			g_shell.status = 130;
+			return (g_shell.status);
+		}
+		cmd_iter = cmd_iter->next;
+	}
 	status = 0;
 	fds[0] = dup(0);
 	fds[1] = dup(1);
@@ -60,21 +71,23 @@ int	cmd(t_cmd *cmd)
 	if (status != -1)
 		return (status);
 	status = 0;
-	setup_exec_signals();
+	setup_parent_signals();
 	pid = fork();
 	if (pid == -1)
 		throw_err(SYSCALL_FAIL, "fork");
 	if (!pid)
 	{
-		reset_signals_in_child();
+		setup_child_signals();
 		if (cmd->redircount)
 			redir(cmd->redir, cmd->redircount);
 		if (cmd->argcount)
 			exec(cmd->args);
 	}
 	else
+	{
 		waitpid(pid, &status, 0);
-	g_shell.in_execution = false;
+		setup_interactive_signals();
+	}
 	g_shell.status = status >> 8;
 	return (g_shell.status);
 }

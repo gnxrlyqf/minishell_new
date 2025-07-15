@@ -94,6 +94,7 @@ typedef struct s_cmd
 	int				argcount;
 	int				redircount;
 	struct s_cmd	*next;
+	int heredoc_interrupted;
 }	t_cmd;
 
 int				is_whitespace(char c);
@@ -120,10 +121,11 @@ char			*do_heredoc(char *eof, int expand);
 char			*quotes(char *str);
 t_token_type	get_token_type(t_state state);
 t_quote_type	get_quote_type(t_context context);
-void			setup_prompt_signals(void);
-void			reset_signals_in_child(void);
-void			setup_exec_signals(void);
-void			setup_heredoc_signals(void);
-void			ft_sigint_handler(int sig);
+void sigint_handler(int sig);
+void heredoc_sigint_handler(int sig);
+void setup_interactive_signals(void);
+void setup_child_signals(void);
+void setup_heredoc_signals(void);
+void setup_parent_signals(void);
 
 #endif

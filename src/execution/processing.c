@@ -102,25 +102,41 @@ char	*do_heredoc(char *eof, int expand)
 	int		fd;
 	char	*file;
 	char	*line;
+	int		status;
 
 	file = mkfilename(eof);
 	fd = open(file, O_WRONLY | O_CREAT, 0644);
 	pid = fork();
 	if (pid)
-		waitpid(pid, NULL, 0);
-	while (!pid)
 	{
-		line = readline("> ");
-		if (!line || !_strncmp(line, eof, _strlen(eof)))
-			break ;
-		if (expand)
-			line = quotes_expand(line, NULL);
-		_printfd(fd, "%s\n", line);
+		waitpid(pid, &status, 0);
+		setup_interactive_signals();
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+        {
+            close(fd);
+            unlink(file);
+            free(file);
+            return NULL;
+        }
 	}
-	if (!pid && !line)
-		_printfd(1, "minishell: warning: here-document\
- delimited by end-of-file (wanted `%s')\n", eof);
-	if (!pid)
+	else
+	{
+		setup_heredoc_signals();
+		while (1)
+		{
+			line = readline("> ");
+
+			if (!line || !_strncmp(line, eof, _strlen(eof)))
+				break ;
+			if (expand)
+				line = quotes_expand(line, NULL);
+			_printfd(fd, "%s\n", line);
+		}
+		if (!line && g_shell.status != 130)
+			_printfd(1, "minishell: warning: here-document\
+		delimited by end-of-file (wanted `%s')\n", eof);
+		close(fd);
 		exit(0);
+	}
 	return (close(fd), file);
 }

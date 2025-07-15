@@ -58,8 +58,6 @@ typedef struct s_shell
 	t_env			*env;
 	int				status;
 	char			*chached_pwd;
-	bool			in_execution;
-	bool			heredoc_sigint;
 	struct termios	orig_termios;
 }	t_shell;
 
