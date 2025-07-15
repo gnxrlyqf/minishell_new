@@ -44,8 +44,11 @@ char	**mkenvp(t_env *env, int *envsize)
 	curr = env;
 	while (curr)
 	{
-		*envp = mkvar(curr);
-		envp++;
+		if (curr->value)
+		{
+			*envp = mkvar(curr);
+			envp++;
+		}
 		curr = curr->next;
 	}
 	*envsize = size;

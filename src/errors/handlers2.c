@@ -17,13 +17,13 @@
 void	ambig_redir(char *data)
 {
 	_printfd(2, "%s: ambiguous redirect\n", data);
-	cleanup(7);
+	cleanup(15);
 }
 
 void	cmd_enoent(char *data)
 {
 	_printfd(2, "%s: command not found\n", data);
-	cleanup(7);
+	cleanup(15);
 	free(data);
 	exit(127);
 }
@@ -31,7 +31,7 @@ void	cmd_enoent(char *data)
 void	is_dir(char *data)
 {
 	_printfd(2, "%s: is a directory\n", data);
-	cleanup(7);
+	cleanup(15);
 	free(data);
 	exit(126);
 }

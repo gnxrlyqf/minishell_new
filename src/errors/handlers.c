@@ -22,7 +22,7 @@ void	unexpected_token(char *data)
 
 void	syscall_fail(char *data)
 {
-	cleanup(7);
+	cleanup(15);
 	free(data);
 	exit(1);
 }
@@ -30,7 +30,7 @@ void	syscall_fail(char *data)
 void	open_fail(char *data)
 {
 	perror(data);
-	cleanup(7);
+	cleanup(15);
 	free(data);
 	exit(1);
 }
@@ -38,6 +38,6 @@ void	open_fail(char *data)
 void	file_enoent(char *data)
 {
 	_printfd(2, "%s: No such file or directory\n", data);
-	cleanup(7);
+	cleanup(15);
 	exit(127);
 }

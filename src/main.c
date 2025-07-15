@@ -47,7 +47,6 @@ int	routine(void)
 {
 	char	*input;
 
-	setup_interactive_signals();
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -65,7 +64,6 @@ int	routine(void)
 		parse(input);
 		start(data()->pipeline);
 		cleanup(1);
-		setup_interactive_signals();
 	}
 	return (0);
 }

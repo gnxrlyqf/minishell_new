@@ -51,7 +51,7 @@ void	init_shell(char **envp)
 	shell->status = 0;
 	shell->chached_pwd = NULL;
 	shell->sig = 0;
-	tcgetattr(STDIN_FILENO, &data()->orig_termios);
+	// tcgetattr(STDIN_FILENO, &data()->orig_termios);
 	signal(SIGINT, foo);
 	signal(SIGQUIT, SIG_IGN);
 }
