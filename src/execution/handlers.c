@@ -12,12 +12,14 @@
 
 #include <main.h>
 
-void	wait_child_processes(int last)
+int	wait_child_processes(int last)
 {
+	int		last_status;
 	int		status;
 	int		sig_flag;
 	pid_t	wait_pid;
 
+	last_status = 0;
 	sig_flag = 0;
 	while (1)
 	{
@@ -27,25 +29,30 @@ void	wait_child_processes(int last)
 		if (WIFSIGNALED(status) && \
 			(WTERMSIG(status) == SIGINT || WTERMSIG(status) == SIGQUIT))
 			sig_flag = WTERMSIG(status);
+		if (wait_pid == last)
+			last_status = status;
 	}
 	if (sig_flag == SIGINT)
 		write(1, "\n", 1);
 	else if (sig_flag == SIGQUIT)
 		write(2, "Quit (core dumped)\n", 19);
+	if (WIFSIGNALED(last_status))
+		return (128 + WTERMSIG(last_status));
+	return (WEXITSTATUS(last_status));
 }
 int	do_pipeline(t_cmd *pipeline)
 {
 	int	status;
+	int last;
 
-	status = 0;
 	while (pipeline->next)
 	{
 		cmd_pipe(pipeline);
 		pipeline = pipeline->next;
 	}
-	// cmd(pipeline);
-	// wait_child_processes(last);
-	return (cmd(pipeline));
+	last = cmd(pipeline);
+	status = wait_child_processes(last);
+	return (status);
 }
 
 int	start(t_cmd *pipeline)
@@ -109,6 +116,9 @@ int	cmd(t_cmd *cmd)
 			exec(cmd->args);
 	}
 	else
-		parent(pid, &status);
-	return (data()->status);
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	return (pid);
 }

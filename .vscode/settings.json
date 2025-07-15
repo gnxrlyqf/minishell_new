@@ -19,7 +19,8 @@
 		"typeinfo": "c",
 		"string": "c",
 		"string_view": "c",
-		"span": "c"
+		"span": "c",
+		"random": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

@@ -41,12 +41,16 @@ void	cmd_pipe(t_cmd *cmd)
 		throw_err(SYSCALL_FAIL, "fork");
 	if (!pid)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		close(fdp[0]);
 		dup2(fdp[1], 1);
 		exec_pipe(cmd);
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		close(fdp[1]);
 		dup2(fdp[0], 0);
 	}
