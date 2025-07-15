@@ -61,7 +61,7 @@ t_cmd	*init_cmd(t_list *list)
 	return (cmd);
 }
 
-char	*check_heredoc(t_token_type type, t_token *token, int *hdsigint)
+char	*check_heredoc(t_token_type type, t_token *token)
 {
 	char	*eof;
 	char	*path;
@@ -77,13 +77,13 @@ char	*check_heredoc(t_token_type type, t_token *token, int *hdsigint)
 	}
 	else
 		eof = token->value;
-	path = do_heredoc(eof, expandable, hdsigint);
+	path = do_heredoc(eof, expandable);
 	if (!expandable)
 		free(eof);
 	return (path);
 }
 
-t_cmd	*create_cmd(t_list **list, t_list *cpy, int *hdsigint)
+t_cmd	*create_cmd(t_list **list, t_list *cpy)
 {
 	t_token	*tok;
 	t_cmd	*cmd;
@@ -100,7 +100,7 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy, int *hdsigint)
 		{
 			cmd->redir->type = tok->type;
 			*list = (*list)->next;
-			cmd->redir->file = check_heredoc(cmd->redir->type, (*list)->data, hdsigint);
+			cmd->redir->file = check_heredoc(cmd->redir->type, (*list)->data);
 			cmd->redir++;
 		}
 		*list = (*list)->next;
@@ -115,11 +115,10 @@ t_cmd	*create_pipeline(t_list *list)
 	t_list	*cpy;
 	t_cmd	*head;
 	t_cmd	*cmd;
-	int		hdsigint;
 
 	cpy = list;
-	head = create_cmd(&list, cpy, &hdsigint);
-	if (hdsigint)
+	head = create_cmd(&list, cpy);
+	if (g_shell.sig)
 	{
 		_printfd(2, "hdsigint\n");
 		return (NULL);
@@ -133,8 +132,8 @@ t_cmd	*create_pipeline(t_list *list)
 			continue ;
 		}
 		cpy = list;
-		cmd->next = create_cmd(&list, cpy, &hdsigint);
-		if (hdsigint)
+		cmd->next = create_cmd(&list, cpy);
+		if (g_shell.sig)
 		{
 			_printfd(2, "hdsigint\n");
 			return (NULL);

@@ -19,12 +19,25 @@ char	*max_str(char *a, char *b)
 	return (b);
 }
 
+void	foo(int sig)
+{
+	(void)sig;
+	g_shell.status = 130;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 void	init_shell(char **envp)
 {
 	g_shell.env = init_env(envp);
 	g_shell.status = 0;
 	g_shell.chached_pwd = NULL;
-	tcgetattr(STDIN_FILENO, &g_shell.orig_termios);
+	g_shell.sig = 0;
+	// tcgetattr(STDIN_FILENO, &g_shell.orig_termios);
+	signal(SIGINT, foo);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	cleanup(int n)

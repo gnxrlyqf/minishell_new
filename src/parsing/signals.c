@@ -26,6 +26,7 @@ void	sigint_handler(int sig)
 void heredoc_sigint_handler(int sig)
 {
     (void)sig;
+    g_shell.sig = 1;
     g_shell.status = 130;
     write(1, "\n", 1);
     exit(130);

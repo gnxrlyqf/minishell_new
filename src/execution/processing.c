@@ -96,7 +96,7 @@ char	*quotes_expand(char *str, int *expanded)
 }
 
 
-char	*do_heredoc(char *eof, int expand, int *hdsigint)
+char	*do_heredoc(char *eof, int expand)
 {
 	int		pid;
 	int		fd;
@@ -107,20 +107,7 @@ char	*do_heredoc(char *eof, int expand, int *hdsigint)
 	file = mkfilename(eof);
 	fd = open(file, O_WRONLY | O_CREAT, 0644);
 	pid = fork();
-	if (pid)
-	{
-		waitpid(pid, &status, 0);
-		setup_interactive_signals();
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		{
-			*hdsigint = 1;
-			close(fd);
-			unlink(file);
-			free(file);
-			return NULL;
-		}
-	}
-	else
+	if (!pid)
 	{
 		setup_heredoc_signals();
 		while (1)
@@ -137,6 +124,19 @@ char	*do_heredoc(char *eof, int expand, int *hdsigint)
 		delimited by end-of-file (wanted `%s')\n", eof);
 		close(fd);
 		exit(0);
+	}
+	else
+	{
+		setup_interactive_signals();
+		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status) && status == SIGINT)
+		{
+			fprintf(stderr, "test\n");
+			close(fd);
+			unlink(file);
+			free(file);
+			return NULL;
+		}
 	}
 	return (close(fd), file);
 }
