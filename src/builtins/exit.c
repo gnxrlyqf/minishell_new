@@ -46,7 +46,8 @@ int	__exit(char **args)
 		if (*args)
 		{
 			_printfd(2, "exit: too many arguments\n");
-			status = 1;
+			g_shell.status = 1;
+			return (1);
 		}
 	}
 	cleanup(3);

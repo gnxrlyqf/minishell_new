@@ -22,7 +22,6 @@ t_shell	g_shell;
 t_cmd	*parse(char *input)
 {
 	t_lexer	*lexer;
-	t_list	*tokens;
 
 	lexer = init_lexer(input);
 	if (!lexer)
@@ -38,7 +37,6 @@ t_cmd	*parse(char *input)
 		free(input);
 		return (NULL);
 	}
-	tokens = lexer->tokens;
 	g_shell.pipeline = create_pipeline(lexer->tokens);
 	free_lexer(lexer);
 	free(input);
