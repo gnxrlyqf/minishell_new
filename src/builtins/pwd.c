@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <main.h>
+#include <_printfd.h>
 
 int	pwd(char **args)
 {
@@ -28,7 +29,7 @@ int	pwd(char **args)
 			access parent directories");
 		return (1);
 	}
-	printf("%s\n", pwd);
+	_printfd(1, "%s\n", pwd);
 	free(pwd);
 	return (0);
 }

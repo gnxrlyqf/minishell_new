@@ -48,7 +48,6 @@ int	start(t_cmd *pipeline)
 		}
 		cmd_iter = cmd_iter->next;
 	}
-
 	status = 0;
 	fds[0] = dup(0);
 	fds[1] = dup(1);
@@ -68,8 +67,6 @@ int	cmd(t_cmd *cmd)
 	int	pid;
 	int	status;
 
-	if (cmd->heredoc_interrupted)
-		return (130);
 	status = check_builtins(cmd);
 	if (status != -1)
 		return (status);

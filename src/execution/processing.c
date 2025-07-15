@@ -109,12 +109,12 @@ char	*do_heredoc(char *eof, int expand)
 	pid = fork();
 	if (pid)
 	{
-		 waitpid(pid, NULL, 0);
-        setup_interactive_signals();
-        if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		waitpid(pid, &status, 0);
+		setup_interactive_signals();
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
         {
             close(fd);
-            unlink(file); // Remove incomplete heredoc file
+            unlink(file);
             free(file);
             return NULL;
         }

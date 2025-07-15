@@ -68,6 +68,7 @@ int	routine(void)
 		start(g_shell.pipeline);
 		free_pipeline(g_shell.pipeline);
 		setup_interactive_signals();
+		cleanup(1);
 	}
 	return (0);
 }
@@ -76,8 +77,10 @@ int	main(int ac, char **av, char **envp)
 {
 	int	status;
 
+	(void)ac;
+	(void)av;
 	init_shell(envp);
 	status = routine();
-	free_env(g_shell.env);
+	cleanup(6);
 	return (status);
 }

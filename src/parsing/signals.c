@@ -26,9 +26,9 @@ void	sigint_handler(int sig)
 void heredoc_sigint_handler(int sig)
 {
     (void)sig;
-    cmdline->heredoc_interrupted = 1;
+    g_shell.status = 130;
     write(1, "\n", 1);
-    exit(130); // Exit child on Ctrl+C
+    exit(130);
 }
 
 void setup_interactive_signals(void)

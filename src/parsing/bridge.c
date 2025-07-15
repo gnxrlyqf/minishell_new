@@ -101,6 +101,8 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy)
 			cmd->redir->type = tok->type;
 			*list = (*list)->next;
 			cmd->redir->file = check_heredoc(cmd->redir->type, (*list)->data);
+			if (!cmd->redir->file && cmd->redir->type == Here_doc)
+				cmd->heredoc_interrupted = 1;
 			cmd->redir++;
 		}
 		*list = (*list)->next;
@@ -115,6 +117,7 @@ t_cmd	*create_pipeline(t_list *list)
 	t_list	*cpy;
 	t_cmd	*head;
 	t_cmd	*cmd;
+	int		hdsigint;
 
 	cpy = list;
 	head = create_cmd(&list, cpy);
