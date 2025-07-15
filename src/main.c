@@ -49,9 +49,9 @@ int	routine(void)
 {
 	char	*input;
 
+	setup_interactive_signals();
 	while (1)
 	{
-		setup_prompt_signals();
 		input = readline("minishell> ");
 		if (!input)
 		{
@@ -67,6 +67,7 @@ int	routine(void)
 		parse(input);
 		start(g_shell.pipeline);
 		free_pipeline(g_shell.pipeline);
+		setup_interactive_signals();
 	}
 	return (0);
 }

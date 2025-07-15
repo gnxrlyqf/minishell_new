@@ -88,6 +88,7 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy)
 	t_cmd	*cmd;
 
 	cmd = init_cmd(cpy);
+	cmd->heredoc_interrupted = 0;
 	while (*list)
 	{
 		tok = (t_token *)(*list)->data;
