@@ -22,19 +22,19 @@ int	_chdir(char *dir)
 		return (1);
 	oldpwd = getcwd(NULL, 0);
 	if (oldpwd)
-		update_env(&g_shell.env, "OLDPWD", oldpwd);
+		update_env(&data()->env, "OLDPWD", oldpwd);
 	if (chdir(dir) == -1)
 	{
-		g_shell.status = 1;
+		data()->status = 1;
 		_printfd(2, "cd: %s: No such file or directory\n", dir);
 		return (1);
 	}
 	free(dir);
 	pwd = getcwd(NULL, 0);
-	update_env(&g_shell.env, "PWD", pwd);
-	if (g_shell.chached_pwd)
+	update_env(&data()->env, "PWD", pwd);
+	if (data()->chached_pwd)
 		cleanup(4);
-	g_shell.chached_pwd = _strdup(pwd);
+	data()->chached_pwd = _strdup(pwd);
 	return (0);
 }
 

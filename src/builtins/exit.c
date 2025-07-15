@@ -30,7 +30,7 @@ int	__exit(char **args)
 {
 	int	status;
 
-	status = g_shell.status;
+	status = data()->status;
 	args++;
 	if (*args)
 	{
@@ -46,7 +46,7 @@ int	__exit(char **args)
 		if (*args)
 		{
 			_printfd(2, "exit: too many arguments\n");
-			g_shell.status = 1;
+			data()->status = 1;
 			return (1);
 		}
 	}

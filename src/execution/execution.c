@@ -104,8 +104,8 @@ void	exec(char **args)
 
 	if (!**args)
 		throw_err(CMD_ENOENT, _strdup(""));
-	path = which(*args, g_shell.env);
-	envp = mkenvp(g_shell.env, &envsize);
+	path = which(*args, data()->env);
+	envp = mkenvp(data()->env, &envsize);
 	execve(path, args, envp);
 	free_arr(envp, envsize);
 	throw_err(CMD_ENOENT, path);

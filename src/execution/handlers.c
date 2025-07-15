@@ -25,8 +25,8 @@ int	do_pipeline(t_cmd *pipeline)
 	// while (waitpid(-1, &status, 0) != -1)
 	// {
 	// 	if (WIFSIGNALED(status) && status == 2)
-	// 		g_shell.status = 130;
-	// 	g_shell.status = status >> 8;
+	// 		data()->status = 130;
+	// 	data()->status = status >> 8;
 	// }
 	// temporarily removed this part as it was causing issues during some tests, needs fixing
 	return (cmd(pipeline));
@@ -48,7 +48,7 @@ int	start(t_cmd *pipeline)
 	close(fds[0]);
 	close(fds[1]);
 	close(fds[2]);
-	return (g_shell.status);
+	return (data()->status);
 }
 
 int	cmd(t_cmd *cmd)
@@ -83,6 +83,6 @@ int	cmd(t_cmd *cmd)
 		signal(SIGQUIT, SIG_IGN);
 		// setup_interactive_signals();
 	}
-	g_shell.status = status >> 8;
-	return (g_shell.status);
+	data()->status = status >> 8;
+	return (data()->status);
 }

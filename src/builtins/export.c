@@ -55,11 +55,11 @@ int	export_add(char **args)
 		while (**args && **args != '=')
 			(*args)++;
 		if (!**args)
-			update_env(&g_shell.env, _strdup(key), NULL);
+			update_env(&data()->env, _strdup(key), NULL);
 		else
 		{
 			**args = 0;
-			update_env(&g_shell.env, _strdup(key), _strdup((*args) + 1));
+			update_env(&data()->env, _strdup(key), _strdup((*args) + 1));
 		}
 		*(args++) = key;
 	}
@@ -73,7 +73,7 @@ int	export(char **args)
 	args++;
 	if (*args)
 		return (export_add(args));
-	curr = g_shell.env;
+	curr = data()->env;
 	while (curr)
 	{
 		printf("declare -x %s", curr->key);

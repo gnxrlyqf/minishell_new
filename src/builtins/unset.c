@@ -19,9 +19,9 @@ int	unset(char **args)
 	args++;
 	while (*args)
 	{
-		node = get_env(g_shell.env, *args);
+		node = get_env(data()->env, *args);
 		if (node)
-			free_node(&g_shell.env, node);
+			free_node(&data()->env, node);
 		args++;
 	}
 	return (0);

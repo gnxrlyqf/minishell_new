@@ -18,9 +18,9 @@ int	pwd(char **args)
 	char	*pwd;
 
 	(void)args;
-	pwd = _strdup(g_shell.chached_pwd);
+	pwd = _strdup(data()->chached_pwd);
 	if (!pwd)
-		pwd = _strdup(get_env_val(g_shell.env, "PWD"));
+		pwd = _strdup(get_env_val(data()->env, "PWD"));
 	if (!pwd)
 		pwd = getcwd(NULL, 0);
 	if (!pwd)

@@ -17,7 +17,7 @@ int	env(char **args)
 	t_env	*curr;
 
 	(void)args;
-	curr = g_shell.env;
+	curr = data()->env;
 	while (curr)
 	{
 		if (curr->value)

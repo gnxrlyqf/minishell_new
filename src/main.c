@@ -37,10 +37,10 @@ t_cmd	*parse(char *input)
 		free(input);
 		return (NULL);
 	}
-	g_shell.pipeline = create_pipeline(lexer->tokens);
+	data()->pipeline = create_pipeline(lexer->tokens);
 	free_lexer(lexer);
 	free(input);
-	return (g_shell.pipeline);
+	return (data()->pipeline);
 }
 
 int	routine(void)
@@ -54,7 +54,7 @@ int	routine(void)
 		if (!input)
 		{
 			write(1, "\nexit\n", 6);
-			return (g_shell.status);
+			return (data()->status);
 		}
 		if (*input == '\0')
 		{
@@ -63,10 +63,9 @@ int	routine(void)
 		}
 		add_history(input);
 		parse(input);
-		start(g_shell.pipeline);
-		free_pipeline(g_shell.pipeline);
+		start(data()->pipeline);
+		cleanup(1);
 		setup_interactive_signals();
-		// cleanup(1);
 	}
 	return (0);
 }
@@ -79,6 +78,6 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	init_shell(envp);
 	status = routine();
-	cleanup(6);
+	cleanup(14);
 	return (status);
 }

@@ -18,7 +18,7 @@ int	expand_status(t_list **list)
 	char	*status;
 	char	*cpy;
 
-	status = _itoa(g_shell.status);
+	status = _itoa(data()->status);
 	cpy = status;
 	while (*status)
 		add_node(list, status++);
@@ -119,7 +119,7 @@ char	*do_heredoc(char *eof, int expand)
 				line = quotes_expand(line, NULL);
 			_printfd(fd, "%s\n", line);
 		}
-		if (!line && g_shell.status != 130)
+		if (!line && data()->status != 130)
 			_printfd(1, "minishell: warning: here-document\
 		delimited by end-of-file (wanted `%s')\n", eof);
 		close(fd);

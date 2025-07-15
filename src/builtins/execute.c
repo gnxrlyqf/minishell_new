@@ -34,8 +34,8 @@ int	check_builtins(t_cmd *cmd)
 	if (cmd->redircount)
 	{
 		if (redir_builtin(cmd->redir, cmd->redircount))
-			return (g_shell.status = 1, 1);
+			return (data()->status = 1, 1);
 	}
-	g_shell.status = funcs[i](args);
-	return (g_shell.status);
+	data()->status = funcs[i](args);
+	return (data()->status);
 }

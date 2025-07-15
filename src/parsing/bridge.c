@@ -118,7 +118,7 @@ t_cmd	*create_pipeline(t_list *list)
 
 	cpy = list;
 	head = create_cmd(&list, cpy);
-	if (g_shell.sig)
+	if (data()->sig)
 	{
 		_printfd(2, "hdsigint\n");
 		return (NULL);
@@ -133,7 +133,7 @@ t_cmd	*create_pipeline(t_list *list)
 		}
 		cpy = list;
 		cmd->next = create_cmd(&list, cpy);
-		if (g_shell.sig)
+		if (data()->sig)
 		{
 			_printfd(2, "hdsigint\n");
 			return (NULL);

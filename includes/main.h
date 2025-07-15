@@ -133,4 +133,6 @@ void	open_fail(char *data);
 void	file_enoent(char *data);
 void	cleanup(int n);
 void	foo(int sig);
+t_shell	*data(void);
+
 #endif
