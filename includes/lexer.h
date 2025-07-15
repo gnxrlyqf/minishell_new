@@ -94,7 +94,6 @@ typedef struct s_cmd
 	int				argcount;
 	int				redircount;
 	struct s_cmd	*next;
-	int heredoc_interrupted;
 }	t_cmd;
 
 int				is_whitespace(char c);
@@ -117,7 +116,6 @@ t_lexer			*set_state(t_lexer *lexer);
 void			set_context(t_lexer *lexer, char c);
 void			resolve_tokens(t_lexer *lexer);
 t_cmd			*create_pipeline(t_list *list);
-char			*do_heredoc(char *eof, int expand);
 char			*quotes(char *str);
 t_token_type	get_token_type(t_state state);
 t_quote_type	get_quote_type(t_context context);

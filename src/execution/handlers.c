@@ -36,18 +36,7 @@ int	start(t_cmd *pipeline)
 {
 	int	fds[3];
 	int	status;
-	t_cmd	*cmd_iter;
 
-	cmd_iter = pipeline;
-	while (cmd_iter)
-	{
-		if (cmd_iter->heredoc_interrupted)
-		{
-			g_shell.status = 130;
-			return (g_shell.status);
-		}
-		cmd_iter = cmd_iter->next;
-	}
 	status = 0;
 	fds[0] = dup(0);
 	fds[1] = dup(1);

@@ -96,7 +96,7 @@ char	*quotes_expand(char *str, int *expanded)
 }
 
 
-char	*do_heredoc(char *eof, int expand)
+char	*do_heredoc(char *eof, int expand, int *hdsigint)
 {
 	int		pid;
 	int		fd;
@@ -112,12 +112,13 @@ char	*do_heredoc(char *eof, int expand)
 		waitpid(pid, &status, 0);
 		setup_interactive_signals();
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-        {
-            close(fd);
-            unlink(file);
-            free(file);
-            return NULL;
-        }
+		{
+			*hdsigint = 1;
+			close(fd);
+			unlink(file);
+			free(file);
+			return NULL;
+		}
 	}
 	else
 	{
@@ -125,7 +126,6 @@ char	*do_heredoc(char *eof, int expand)
 		while (1)
 		{
 			line = readline("> ");
-
 			if (!line || !_strncmp(line, eof, _strlen(eof)))
 				break ;
 			if (expand)

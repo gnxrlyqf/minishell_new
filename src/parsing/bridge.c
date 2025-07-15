@@ -12,6 +12,7 @@
 
 #include <lexer.h>
 #include <main.h>
+#include <_printfd.h>
 
 void	count_words(t_list *list, int *args, int *redir)
 {
@@ -60,7 +61,7 @@ t_cmd	*init_cmd(t_list *list)
 	return (cmd);
 }
 
-char	*check_heredoc(t_token_type type, t_token *token)
+char	*check_heredoc(t_token_type type, t_token *token, int *hdsigint)
 {
 	char	*eof;
 	char	*path;
@@ -76,19 +77,18 @@ char	*check_heredoc(t_token_type type, t_token *token)
 	}
 	else
 		eof = token->value;
-	path = do_heredoc(eof, expandable);
+	path = do_heredoc(eof, expandable, hdsigint);
 	if (!expandable)
 		free(eof);
 	return (path);
 }
 
-t_cmd	*create_cmd(t_list **list, t_list *cpy)
+t_cmd	*create_cmd(t_list **list, t_list *cpy, int *hdsigint)
 {
 	t_token	*tok;
 	t_cmd	*cmd;
 
 	cmd = init_cmd(cpy);
-	cmd->heredoc_interrupted = 0;
 	while (*list)
 	{
 		tok = (t_token *)(*list)->data;
@@ -100,9 +100,7 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy)
 		{
 			cmd->redir->type = tok->type;
 			*list = (*list)->next;
-			cmd->redir->file = check_heredoc(cmd->redir->type, (*list)->data);
-			if (!cmd->redir->file && cmd->redir->type == Here_doc)
-				cmd->heredoc_interrupted = 1;
+			cmd->redir->file = check_heredoc(cmd->redir->type, (*list)->data, hdsigint);
 			cmd->redir++;
 		}
 		*list = (*list)->next;
@@ -120,7 +118,12 @@ t_cmd	*create_pipeline(t_list *list)
 	int		hdsigint;
 
 	cpy = list;
-	head = create_cmd(&list, cpy);
+	head = create_cmd(&list, cpy, &hdsigint);
+	if (hdsigint)
+	{
+		_printfd(2, "hdsigint\n");
+		return (NULL);
+	}
 	cmd = head;
 	while (list && ((t_token *)list->data)->type != End_of_file)
 	{
@@ -130,7 +133,12 @@ t_cmd	*create_pipeline(t_list *list)
 			continue ;
 		}
 		cpy = list;
-		cmd->next = create_cmd(&list, cpy);
+		cmd->next = create_cmd(&list, cpy, &hdsigint);
+		if (hdsigint)
+		{
+			_printfd(2, "hdsigint\n");
+			return (NULL);
+		}
 		cmd = cmd->next;
 	}
 	return (head);

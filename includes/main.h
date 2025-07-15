@@ -58,6 +58,7 @@ typedef struct s_shell
 	t_env			*env;
 	int				status;
 	char			*chached_pwd;
+	int				sig;
 	struct termios	orig_termios;
 }	t_shell;
 
@@ -75,7 +76,7 @@ char	*quotes_expand(char *str, int *expanded);
 int		my_open(char *path, int flags);
 int		my_open_builtin(char *path, int flags);
 char	*mkfilename(char *path);
-char	*do_heredoc(char *eof, int expand);
+char	*do_heredoc(char *eof, int expand, int *hdsigint);
 void	redir(t_redir *redir, int size);
 int		redir_builtin(t_redir *redir, int size);
 char	*mkpath(char *path, char *cmd);

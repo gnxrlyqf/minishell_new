@@ -66,7 +66,7 @@ int	routine(void)
 		start(g_shell.pipeline);
 		free_pipeline(g_shell.pipeline);
 		setup_interactive_signals();
-		cleanup(1);
+		// cleanup(1);
 	}
 	return (0);
 }
