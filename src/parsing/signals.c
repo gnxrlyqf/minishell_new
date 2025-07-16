@@ -26,8 +26,6 @@ void	sigint_handler(int sig)
 void heredoc_sigint_handler(int sig)
 {
     (void)sig;
-    data()->sig = 1;
-    data()->status = 130;
     write(1, "\n", 1);
     exit(130);
 }

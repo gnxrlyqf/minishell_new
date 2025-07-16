@@ -20,7 +20,11 @@
 		"string": "c",
 		"string_view": "c",
 		"span": "c",
-		"random": "c"
+		"random": "c",
+		"deque": "c",
+		"unordered_map": "c",
+		"vector": "c",
+		"initializer_list": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

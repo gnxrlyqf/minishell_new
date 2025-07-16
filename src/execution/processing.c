@@ -52,12 +52,12 @@ char	*quotes(char *str)
 	return (result);
 }
 
-int		expandable(char *str)
+int		expandable(char *str, int c)
 {
 	str++;
 	if (!*str)
 		return (0);
-	if (_strchr("'\"", *str))
+	if (_strchr("'\"", *str) && c != '"')
 		return (1);
 	if (!_isalpha(*str) && *str != '_' && *str != '?')
 		return (0);
@@ -75,7 +75,7 @@ char	*quotes_expand(char *str, int *expanded)
 	ret = str;
 	while (*str)
 	{
-		if (*str == '$' && c != '\'' && expandable(str))
+		if (*str == '$' && c != '\'' && expandable(str, c))
 		{
 			str += fill_var(str + 1, &list, expanded);
 			continue ;
@@ -95,48 +95,55 @@ char	*quotes_expand(char *str, int *expanded)
 	return (ret);
 }
 
+char	*do_heredoc(char *file, char *eof, int expand)
+{
+	int		fd;
+	char	*line;
 
-char	*do_heredoc(char *eof, int expand)
+	fd = open(file, O_WRONLY | O_CREAT, 0644);
+	signal(SIGINT, heredoc_sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || !_strncmp(line, eof, _strlen(eof)))
+			break ;
+		if (expand)
+			line = quotes_expand(line, NULL);
+		_printfd(fd, "%s\n", line);
+		free(line);
+	}
+	if (!line && data()->status != 130)
+		_printfd(1, "\nminishell: warning: here-document\
+ delimited by end-of-file (wanted `%s')\n", eof);
+	close(fd);
+	free(file);
+	cleanup(15);
+	exit(0);
+}
+
+
+char	*hdoc(char *eof, int expand)
 {
 	int		pid;
-	int		fd;
-	char	*file;
-	char	*line;
 	int		status;
+	char	*file;
 
-	file = mkfilename(eof);
-	fd = open(file, O_WRONLY | O_CREAT, 0644);
 	pid = fork();
+	file = mkfilename(eof);
 	if (!pid)
-	{
-		setup_heredoc_signals();
-		while (1)
-		{
-			line = readline("> ");
-			if (!line || !_strncmp(line, eof, _strlen(eof)))
-				break ;
-			if (expand)
-				line = quotes_expand(line, NULL);
-			_printfd(fd, "%s\n", line);
-		}
-		if (!line && data()->status != 130)
-			_printfd(1, "minishell: warning: here-document\
-		delimited by end-of-file (wanted `%s')\n", eof);
-		close(fd);
-		exit(0);
-	}
+		do_heredoc(file, eof, expand);
 	else
 	{
-		setup_interactive_signals();
+		signal(SIGINT, SIG_IGN);
 		waitpid(pid, &status, 0);
-		if (WIFSIGNALED(status) && status == SIGINT)
+		signal(SIGINT, sigint_handler);
+		if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 		{
-			fprintf(stderr, "test\n");
-			close(fd);
 			unlink(file);
 			free(file);
 			return NULL;
 		}
 	}
-	return (close(fd), file);
+	return (file);
 }

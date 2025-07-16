@@ -76,7 +76,8 @@ char	*quotes_expand(char *str, int *expanded);
 int		my_open(char *path, int flags);
 int		my_open_builtin(char *path, int flags);
 char	*mkfilename(char *path);
-char	*do_heredoc(char *eof, int expand);
+char	*hdoc(char *eof, int expand);
+char	*do_heredoc(char *file, char *eof, int expand);
 void	redir(t_redir *redir, int size);
 int		redir_builtin(t_redir *redir, int size);
 char	*mkpath(char *path, char *cmd);
@@ -132,7 +133,8 @@ void	free_env(t_env *env);
 void	open_fail(char *data);
 void	file_enoent(char *data);
 void	cleanup(int n);
-void	foo(int sig);
+void	sigint_handler(int sig);
 t_shell	*data(void);
+int		do_pipeline(t_cmd *pipeline);
 
 #endif

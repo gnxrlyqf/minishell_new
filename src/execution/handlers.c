@@ -12,7 +12,7 @@
 
 #include <main.h>
 
-int	wait_child_processes(int last)
+int	wait_children(int last)
 {
 	int		last_status;
 	int		status;
@@ -40,6 +40,7 @@ int	wait_child_processes(int last)
 		return (128 + WTERMSIG(last_status));
 	return (WEXITSTATUS(last_status));
 }
+
 int	do_pipeline(t_cmd *pipeline)
 {
 	int	status;
@@ -51,7 +52,7 @@ int	do_pipeline(t_cmd *pipeline)
 		pipeline = pipeline->next;
 	}
 	last = cmd(pipeline);
-	status = wait_child_processes(last);
+	status = wait_children(last);
 	return (status);
 }
 
@@ -71,27 +72,9 @@ int	start(t_cmd *pipeline)
 	close(fds[0]);
 	close(fds[1]);
 	close(fds[2]);
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	return (data()->status);
-}
-
-void parent(int pid, int *status)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	waitpid(pid, status, 0);
-	signal(SIGINT, foo);
-	signal(SIGQUIT, SIG_IGN);
-	if (WIFEXITED(*status))
-		data()->status = WEXITSTATUS(*status);
-	else if (WIFSIGNALED(*status))
-	{
-		if (WTERMSIG(*status) == SIGINT)
-			write(1, "\n", 1);
-		else if (WTERMSIG(*status) == SIGQUIT)
-			write(2, "Quit (core dumped)\n", 19);
-		if (WTERMSIG(*status) == SIGINT || WTERMSIG(*status) == SIGQUIT)
-			data()->status = 128 + WTERMSIG(*status);
-	}
 }
 
 int	cmd(t_cmd *cmd)

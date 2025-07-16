@@ -19,16 +19,6 @@ char	*max_str(char *a, char *b)
 	return (b);
 }
 
-void	foo(int sig)
-{
-	(void)sig;
-	data()->status = 130;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
 t_shell *data(void)
 {
 	static t_shell *shell;
@@ -50,9 +40,8 @@ void	init_shell(char **envp)
 	shell->env = init_env(envp);
 	shell->status = 0;
 	shell->chached_pwd = NULL;
-	shell->sig = 0;
-	// tcgetattr(STDIN_FILENO, &data()->orig_termios);
-	signal(SIGINT, foo);
+	tcgetattr(STDIN_FILENO, &data()->orig_termios);
+	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
 

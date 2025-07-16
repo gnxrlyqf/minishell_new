@@ -77,7 +77,7 @@ char	*check_heredoc(t_token_type type, t_token *token)
 	}
 	else
 		eof = token->value;
-	path = do_heredoc(eof, expandable);
+	path = hdoc(eof, expandable);
 	if (!expandable)
 		free(eof);
 	return (path);
@@ -101,6 +101,8 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy)
 			cmd->redir->type = tok->type;
 			*list = (*list)->next;
 			cmd->redir->file = check_heredoc(cmd->redir->type, (*list)->data);
+			if (!cmd->redir->file)
+				return (NULL);
 			cmd->redir++;
 		}
 		*list = (*list)->next;
@@ -118,11 +120,8 @@ t_cmd	*create_pipeline(t_list *list)
 
 	cpy = list;
 	head = create_cmd(&list, cpy);
-	if (data()->sig)
-	{
-		_printfd(2, "hdsigint\n");
+	if (!head)
 		return (NULL);
-	}
 	cmd = head;
 	while (list && ((t_token *)list->data)->type != End_of_file)
 	{
@@ -133,11 +132,8 @@ t_cmd	*create_pipeline(t_list *list)
 		}
 		cpy = list;
 		cmd->next = create_cmd(&list, cpy);
-		if (data()->sig)
-		{
-			_printfd(2, "hdsigint\n");
+		if (!cmd->next)
 			return (NULL);
-		}
 		cmd = cmd->next;
 	}
 	return (head);
