@@ -119,11 +119,7 @@ t_cmd			*create_pipeline(t_list *list);
 char			*quotes(char *str);
 t_token_type	get_token_type(t_state state);
 t_quote_type	get_quote_type(t_context context);
-void sigint_handler(int sig);
-void heredoc_sigint_handler(int sig);
-void setup_interactive_signals(void);
-void setup_child_signals(void);
-void setup_heredoc_signals(void);
-void setup_parent_signals(void);
+void 			sigint_handler(int sig);
+void 			heredoc_sigint_handler(int sig);
 
 #endif

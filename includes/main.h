@@ -54,6 +54,7 @@ typedef struct s_env
 
 typedef struct s_shell
 {
+	t_lexer			*lexer;
 	t_cmd			*pipeline;
 	t_env			*env;
 	int				status;
@@ -76,8 +77,8 @@ char	*quotes_expand(char *str, int *expanded);
 int		my_open(char *path, int flags);
 int		my_open_builtin(char *path, int flags);
 char	*mkfilename(char *path);
-char	*hdoc(char *eof, int expand);
-char	*do_heredoc(char *file, char *eof, int expand);
+char	*hdoc(t_cmd *cmd, char *eof, int expand);
+void	do_heredoc(char *file, char *eof, int expand);
 void	redir(t_redir *redir, int size);
 int		redir_builtin(t_redir *redir, int size);
 char	*mkpath(char *path, char *cmd);
@@ -136,5 +137,6 @@ void	cleanup(int n);
 void	sigint_handler(int sig);
 t_shell	*data(void);
 int		do_pipeline(t_cmd *pipeline);
+void	free_node_cmd(t_cmd *cmd);
 
 #endif

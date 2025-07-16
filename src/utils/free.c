@@ -26,6 +26,7 @@ void	free_node_cmd(t_cmd *cmd)
 {
 	int	i;
 
+	i = 0;
 	if (cmd->argcount)
 		free_arr(cmd->args, cmd->argcount);
 	if (cmd->redircount)

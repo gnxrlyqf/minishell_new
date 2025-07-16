@@ -43,6 +43,7 @@ t_cmd	*init_cmd(t_list *list)
 	t_cmd	*cmd;
 	int		argcount;
 	int		redircount;
+	int		i;
 
 	count_words(list, &argcount, &redircount);
 	cmd = malloc(sizeof(t_cmd));
@@ -54,30 +55,35 @@ t_cmd	*init_cmd(t_list *list)
 		cmd->args[argcount] = NULL;
 	}
 	if (redircount)
+	{
 		cmd->redir = malloc(sizeof(t_redir) * redircount);
+		i = 0;
+		while (i < redircount)
+			cmd->redir[i++].file = NULL;
+	}
 	cmd->argcount = argcount;
 	cmd->redircount = redircount;
 	cmd->next = NULL;
 	return (cmd);
 }
 
-char	*check_heredoc(t_token_type type, t_token *token)
+char	*check_heredoc(t_cmd *cmd, t_token *token)
 {
 	char	*eof;
 	char	*path;
 	int		expandable;
 
 	expandable = 1;
-	if (type != Here_doc)
+	if (cmd->redir->type != Here_doc)
 		return (_strdup(token->value));
-	if (*token->value == '"' || *token->value == '\'')
+	if (_strchr(token->value, '"') || _strchr(token->value, '\''))
 	{
 		expandable = 0;
 		eof = quotes(token->value);
 	}
 	else
 		eof = token->value;
-	path = hdoc(eof, expandable);
+	path = hdoc(cmd, eof, expandable);
 	if (!expandable)
 		free(eof);
 	return (path);
@@ -100,9 +106,9 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy)
 		{
 			cmd->redir->type = tok->type;
 			*list = (*list)->next;
-			cmd->redir->file = check_heredoc(cmd->redir->type, (*list)->data);
+			cmd->redir->file = check_heredoc(cmd, (*list)->data);
 			if (!cmd->redir->file)
-				return (NULL);
+				return (free_node_cmd(cmd), NULL);
 			cmd->redir++;
 		}
 		*list = (*list)->next;
@@ -115,14 +121,15 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy)
 t_cmd	*create_pipeline(t_list *list)
 {
 	t_list	*cpy;
-	t_cmd	*head;
+	t_shell *shell;
 	t_cmd	*cmd;
 
 	cpy = list;
-	head = create_cmd(&list, cpy);
-	if (!head)
+	shell = data();
+	shell->pipeline = create_cmd(&list, cpy);
+	if (!shell->pipeline)
 		return (NULL);
-	cmd = head;
+	cmd = shell->pipeline;
 	while (list && ((t_token *)list->data)->type != End_of_file)
 	{
 		if (((t_token *)list->data)->type == Pipe)
@@ -136,5 +143,5 @@ t_cmd	*create_pipeline(t_list *list)
 			return (NULL);
 		cmd = cmd->next;
 	}
-	return (head);
+	return (shell->pipeline);
 }

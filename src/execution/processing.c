@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <main.h>
+#include <lexer.h>
 #include <_printfd.h>
 
 int	expand_status(t_list **list)
@@ -27,20 +28,22 @@ int	expand_status(t_list **list)
 	return (2);
 }
 
-char	*quotes(char *str)
+char    *quotes(char *str)
 {
-	char	*result;
-	int		i;
-	int		j;
-	int		c;
+	char    *result;
+	int i;
+	int j;
+	int c;
 
 	result = malloc(ft_strlen(str) + 1);
+	if (!result)
+		return (NULL);
 	i = 0;
 	j = 0;
 	c = 0;
 	while (str[i])
 	{
-		if ((str[i] == '\'' || str[i] == '"') && c)
+		if ((str[i] == '\'' || str[i] == '"') && c == 0)
 			c = str[i];
 		else if (str[i] == c)
 			c = 0;
@@ -95,18 +98,35 @@ char	*quotes_expand(char *str, int *expanded)
 	return (ret);
 }
 
-char	*do_heredoc(char *file, char *eof, int expand)
+// int	setup(t_cmd *cmd, char *file)
+// {
+// 	int fd;
+
+// 	signal(SIGINT, heredoc_sigint_handler);
+// 	signal(SIGQUIT, SIG_IGN);
+// 	fd = open(file, O_WRONLY | O_CREAT, 0644);
+// 	cleanup(6);
+// 	if (data()->pipeline)
+// 		data()->pipeline->next = cmd;
+// 	else
+// 		data()->pipeline = cmd;
+// 	data()->chached_pwd = file;
+
+// }
+
+void	do_heredoc(char *file, char *eof, int expand)
 {
 	int		fd;
 	char	*line;
 
-	fd = open(file, O_WRONLY | O_CREAT, 0644);
 	signal(SIGINT, heredoc_sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
+	fd = open(file, O_WRONLY | O_CREAT, 0644);
+	free(file);
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || !_strncmp(line, eof, _strlen(eof)))
+		if (!line || !_strcmp(line, eof))
 			break ;
 		if (expand)
 			line = quotes_expand(line, NULL);
@@ -117,33 +137,43 @@ char	*do_heredoc(char *file, char *eof, int expand)
 		_printfd(1, "\nminishell: warning: here-document\
  delimited by end-of-file (wanted `%s')\n", eof);
 	close(fd);
-	free(file);
-	cleanup(15);
 	exit(0);
 }
 
+void	hdparent(int pid, char *file)
+{
+	int status;
 
-char	*hdoc(char *eof, int expand)
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, &status, 0);
+	signal(SIGINT, sigint_handler);
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		unlink(file);
+		free(file);
+		data()->status = 130;
+	}
+}
+
+char	*hdoc(t_cmd *cmd, char *eof, int expand)
 {
 	int		pid;
-	int		status;
 	char	*file;
 
 	pid = fork();
 	file = mkfilename(eof);
 	if (!pid)
+	{
+		free_lexer(data()->lexer);
+		free_node_cmd(cmd);
+		cleanup(15);
 		do_heredoc(file, eof, expand);
+	}
 	else
 	{
-		signal(SIGINT, SIG_IGN);
-		waitpid(pid, &status, 0);
-		signal(SIGINT, sigint_handler);
-		if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
-		{
-			unlink(file);
-			free(file);
-			return NULL;
-		}
+		hdparent(pid, file);
+		if (data()->status == 130)
+			return (NULL);
 	}
 	return (file);
 }

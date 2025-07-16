@@ -40,6 +40,7 @@ void	init_shell(char **envp)
 	shell->env = init_env(envp);
 	shell->status = 0;
 	shell->chached_pwd = NULL;
+	shell->pipeline = NULL;
 	tcgetattr(STDIN_FILENO, &data()->orig_termios);
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
