@@ -38,6 +38,7 @@ void	init_shell(char **envp)
 
 	shell = data();
 	shell->env = init_env(envp);
+	shell->signal = 0;
 	shell->status = 0;
 	shell->chached_pwd = NULL;
 	shell->pipeline = NULL;

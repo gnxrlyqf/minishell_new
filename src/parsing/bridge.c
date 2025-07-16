@@ -52,7 +52,9 @@ t_cmd	*init_cmd(t_list *list)
 	if (argcount)
 	{
 		cmd->args = malloc(sizeof(char *) * (argcount + 1));
-		cmd->args[argcount] = NULL;
+		i = 0;
+		while (i <= argcount)
+			cmd->args[i++] = NULL;
 	}
 	if (redircount)
 	{
@@ -61,10 +63,8 @@ t_cmd	*init_cmd(t_list *list)
 		while (i < redircount)
 			cmd->redir[i++].file = NULL;
 	}
-	cmd->argcount = argcount;
-	cmd->redircount = redircount;
 	cmd->next = NULL;
-	return (cmd);
+	return (cmd->argcount = argcount, cmd->redircount = redircount, cmd);
 }
 
 char	*check_heredoc(t_cmd *cmd, t_token *token)
@@ -93,8 +93,10 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy)
 {
 	t_token	*tok;
 	t_cmd	*cmd;
+	int		i;
 
 	cmd = init_cmd(cpy);
+	i = 0;
 	while (*list)
 	{
 		tok = (t_token *)(*list)->data;
@@ -104,18 +106,16 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy)
 			*(cmd->args++) = quotes_expand(tok->value, NULL);
 		else if (tok->type >= 2)
 		{
-			cmd->redir->type = tok->type;
+			cmd->redir[i].type = tok->type;
 			*list = (*list)->next;
-			cmd->redir->file = check_heredoc(cmd, (*list)->data);
-			if (!cmd->redir->file)
-				return (free_node_cmd(cmd), NULL);
-			cmd->redir++;
+			cmd->redir[i].file = check_heredoc(cmd, (*list)->data);
+			i++;
 		}
+		if (data()->signal == 130)
+			break ;
 		*list = (*list)->next;
 	}
-	cmd->args -= cmd->argcount;
-	cmd->redir -= cmd->redircount;
-	return (cmd);
+	return (cmd->args -= cmd->argcount, cmd);
 }
 
 t_cmd	*create_pipeline(t_list *list)
@@ -127,7 +127,7 @@ t_cmd	*create_pipeline(t_list *list)
 	cpy = list;
 	shell = data();
 	shell->pipeline = create_cmd(&list, cpy);
-	if (!shell->pipeline)
+	if (shell->signal == 130)
 		return (NULL);
 	cmd = shell->pipeline;
 	while (list && ((t_token *)list->data)->type != End_of_file)
@@ -139,7 +139,7 @@ t_cmd	*create_pipeline(t_list *list)
 		}
 		cpy = list;
 		cmd->next = create_cmd(&list, cpy);
-		if (!cmd->next)
+		if (shell->signal == 130)
 			return (NULL);
 		cmd = cmd->next;
 	}

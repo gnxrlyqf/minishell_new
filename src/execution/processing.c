@@ -111,7 +111,6 @@ char	*quotes_expand(char *str, int *expanded)
 // 	else
 // 		data()->pipeline = cmd;
 // 	data()->chached_pwd = file;
-
 // }
 
 void	do_heredoc(char *file, char *eof, int expand)
@@ -137,6 +136,8 @@ void	do_heredoc(char *file, char *eof, int expand)
 		_printfd(1, "\nminishell: warning: here-document\
  delimited by end-of-file (wanted `%s')\n", eof);
 	close(fd);
+	free_lexer(data()->lexer);
+	cleanup(15);
 	exit(0);
 }
 
@@ -150,30 +151,33 @@ void	hdparent(int pid, char *file)
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 	{
 		unlink(file);
-		free(file);
 		data()->status = 130;
 	}
 }
 
 char	*hdoc(t_cmd *cmd, char *eof, int expand)
 {
+	t_shell *shell;
 	int		pid;
 	char	*file;
 
+	shell = data();
 	pid = fork();
 	file = mkfilename(eof);
 	if (!pid)
 	{
-		free_lexer(data()->lexer);
-		free_node_cmd(cmd);
-		cleanup(15);
+		if (shell->pipeline)
+			shell->pipeline->next = cmd;
+		else
+			shell->pipeline = cmd;
 		do_heredoc(file, eof, expand);
 	}
 	else
 	{
 		hdparent(pid, file);
-		if (data()->status == 130)
-			return (NULL);
+		shell->signal = shell->status;
+		if (shell->status == 130)
+			return (free(file), NULL);
 	}
 	return (file);
 }

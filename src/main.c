@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	parse(char *input)
+t_cmd	*parse(char *input)
 {
 	t_shell *shell;
 	t_cmd *pipeline;
@@ -28,19 +28,19 @@ void	parse(char *input)
 	{
 		_printfd(2, "Lexer init failed\n");
 		free(input);
-		return ;
+		return (NULL);
 	}
 	resolve_tokens(shell->lexer);
 	if (check_syntax_errors(shell->lexer))
 	{
 		free_lexer(shell->lexer);
 		free(input);
-		return ;
+		return (NULL);
 	}
 	free(input);
 	pipeline = create_pipeline(shell->lexer->tokens);
 	free_lexer(shell->lexer);
-	shell->pipeline = pipeline;
+	return (pipeline);
 }
 
 int	routine(void)
@@ -51,6 +51,7 @@ int	routine(void)
 	shell = data();
 	while (1)
 	{
+		shell->pipeline = NULL;
 		input = readline("minishell> ");
 		if (!input)
 			return (_printfd(1, "\nexit\n"), shell->status);
@@ -60,8 +61,7 @@ int	routine(void)
 			continue ;
 		}
 		add_history(input);
-		parse(input);
-		if (shell->pipeline)
+		if (parse(input))
 			start(shell->pipeline);
 		cleanup(1);
 	}

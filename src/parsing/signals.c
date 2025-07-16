@@ -25,12 +25,10 @@ void	sigint_handler(int sig)
 
 void heredoc_sigint_handler(int sig)
 {
-    t_shell *shell;
-
     (void)sig;
-    shell = data();
     write(1, "\n", 1);
-    // cleanup(13);
+    free_lexer(data()->lexer);
+    cleanup(15);
     exit(130);
 }
 

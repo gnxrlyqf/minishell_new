@@ -59,7 +59,7 @@ typedef struct s_shell
 	t_env			*env;
 	int				status;
 	char			*chached_pwd;
-	int				sig;
+	int				signal;
 	struct termios	orig_termios;
 }	t_shell;
 
