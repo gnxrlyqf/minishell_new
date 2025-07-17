@@ -25,7 +25,11 @@
 		"unordered_map": "c",
 		"vector": "c",
 		"initializer_list": "c",
+<<<<<<< HEAD
 		"lexer.h": "c"
+=======
+		"_printfd.h": "c"
+>>>>>>> 0acbaac159468758bf0d2fda7e93aa277c3e5963
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

@@ -36,14 +36,17 @@ char	*mkpath(char *path, char *cmd)
 
 char	*check_cwd(char *cmd, t_env *env)
 {
-	t_env	*curr;
-	char	*out;
+	struct stat	st;
+	t_env		*curr;
+	char		*out;
 
 	curr = get_env(env, "PWD");
 	if (!curr)
 		return (_strdup(cmd));
 	out = mkpath(curr->value, cmd);
-	if (!access(out, F_OK | X_OK))
+	if (stat(out, &st) == -1)
+		throw_err(FILE_ENOENT, out);
+	if (!access(out, F_OK | X_OK) && !S_ISDIR(st.st_mode))
 		return (out);
 	free(out);
 	return (_strdup(cmd));
@@ -101,11 +104,13 @@ void	exec(char **args)
 	char	**envp;
 	char	*path;
 	int		envsize;
+	t_shell *shell;
 
 	if (!**args)
 		throw_err(CMD_ENOENT, _strdup(""));
-	path = which(*args, data()->env);
-	envp = mkenvp(data()->env, &envsize);
+	shell = data();
+	path = which(*args, shell->env);
+	envp = mkenvp(shell->env, &envsize);
 	execve(path, args, envp);
 	free_arr(envp, envsize);
 	throw_err(CMD_ENOENT, path);
