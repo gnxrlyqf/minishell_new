@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <main.h>
 #include <_printfd.h>
 #include <errno.h>
+#include <main.h>
 
 char	*mkpath(char *path, char *cmd)
 {
@@ -104,7 +104,7 @@ void	exec(char **args)
 	char	**envp;
 	char	*path;
 	int		envsize;
-	t_shell *shell;
+	t_shell	*shell;
 
 	if (!**args)
 		throw_err(CMD_ENOENT, _strdup(""));

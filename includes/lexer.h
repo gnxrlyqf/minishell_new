@@ -102,6 +102,7 @@ int					is_whitespace(char c);
 int					is_quote(char c);
 int					is_redirect(char c);
 int					is_seperator(char c);
+int					is_operator_state(t_state state);
 int					is_valid_param_start(char *str);
 int					is_valid_param_char(char c);
 int					contains_parameter(char *value);
