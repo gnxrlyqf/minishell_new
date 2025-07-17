@@ -97,6 +97,7 @@ int	cmd(t_cmd *cmd)
 			redir(cmd->redir, cmd->redircount);
 		if (cmd->argcount)
 			exec(cmd->args);
+		cleanup(15);
 		exit(0);
 	}
 	signal(SIGINT, SIG_IGN);

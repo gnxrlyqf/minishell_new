@@ -175,9 +175,11 @@ char	*hdoc(t_cmd *cmd, char *eof, int expand)
 	else
 	{
 		hdparent(pid, file);
-		shell->signal = shell->status;
 		if (shell->status == 130)
+		{
+			shell->signal = 130;
 			return (free(file), NULL);
+		}
 	}
 	return (file);
 }

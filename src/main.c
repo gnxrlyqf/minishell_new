@@ -64,6 +64,7 @@ int	routine(void)
 		if (parse(input))
 			start(shell->pipeline);
 		cleanup(1);
+		shell->signal = 0;
 	}
 	return (0);
 }

@@ -26,6 +26,7 @@ void	exec_pipe(t_cmd *cmd)
 		redir(cmd->redir, cmd->redircount);
 	if (cmd->argcount)
 		exec(cmd->args);
+	cleanup(15);
 	exit(0);
 }
 
