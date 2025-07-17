@@ -21,7 +21,7 @@ int	check_flags(char **args, int *dash_n)
 	while (*args)
 	{
 		arg = *args;
-		if (*arg != '-')
+		if (*arg != '-' || !*(arg + 1))
 			return (i);
 		arg++;
 		while (*arg)
