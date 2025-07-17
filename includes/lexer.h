@@ -121,5 +121,6 @@ t_token_type	get_token_type(t_state state);
 t_quote_type	get_quote_type(t_context context);
 void 			sigint_handler(int sig);
 void 			heredoc_sigint_handler(int sig);
+int				check_syntax_errors(t_lexer *lexer);
 
 #endif

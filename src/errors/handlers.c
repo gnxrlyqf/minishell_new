@@ -13,11 +13,12 @@
 #include <main.h>
 #include <_printfd.h>
 
-void	unexpected_token(char *data)
+void	unexpected_token(char *str)
 {
-	write(2, "Error: unexpected token: `", 26);
-	write(2, data, _strlen(data));
-	write(2, "'\n", 2);
+	if (!*str)
+		str = "newline";
+	_printfd(2, "minishell: syntax error near unexpected token `%s'\n", str);
+	data()->status = 2;
 }
 
 void	syscall_fail(char *data)

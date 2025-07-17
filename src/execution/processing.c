@@ -132,7 +132,7 @@ void	do_heredoc(char *file, char *eof, int expand)
 		_printfd(fd, "%s\n", line);
 		free(line);
 	}
-	if (!line && data()->status != 130)
+	if (!line)
 		_printfd(1, "\nminishell: warning: here-document\
  delimited by end-of-file (wanted `%s')\n", eof);
 	close(fd);
@@ -162,8 +162,8 @@ char	*hdoc(t_cmd *cmd, char *eof, int expand)
 	char	*file;
 
 	shell = data();
-	pid = fork();
 	file = mkfilename(eof);
+	pid = fork();
 	if (!pid)
 	{
 		if (shell->pipeline)

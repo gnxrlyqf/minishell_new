@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <lexer.h>
+#include <main.h>
 
 t_token_type	get_token_type(t_state state)
 {
@@ -157,45 +158,23 @@ static int	check_token_sequence(t_list *lst)
 	t_token	*curr;
 	t_token	*next;
 	t_token	*prev;
-	int		heredoc_count;
 
-	heredoc_count = 0;
 	while (lst)
 	{
-		curr = lst->data ? lst->data : NULL;
-		next = lst->next ? lst->next->data : NULL;
-		prev = lst->prev ? lst->prev->data : NULL;
-		
-		// Pipe at the end or Pipes in a row
+		curr = lst->data;
+		next = NULL;
+		prev = NULL;
+		if (lst->next)
+			next = lst->next->data;
+		if (lst->prev)
+			prev = lst->prev->data;
 		if (curr->type == Pipe && next && (next->type == Pipe || next->type == End_of_file))
-		{
-			printf("minishell: syntax error: unexpected '|'\n");
-			// throw_err(INV_TOKEN, curr->value);
-			return (1);
-		}
-		// Pipe at the beginning
+			return (throw_err(INV_TOKEN, curr->value), 1);
 		if (!prev && curr->type == Pipe)
-		{
-			printf("minishell: syntax error: unexpected '|'\n");
-			// throw_err(INV_TOKEN, curr->value);
-			return (1);
-		}
-		// Redirection without content
+			return (throw_err(INV_TOKEN, curr->value), 1);
 		if (is_redirection(curr->type)
 			&& (!next || is_operator(next->type) || next->type == End_of_file))
-		{
-			printf("minishell: syntax error: unspecified redirect '%s'\n", curr->value);
-			//throw_err(INV_TOKEN, curr->value);
-			return (1);
-		}
-		// here-doc
-		if (curr->type == Here_doc && ++heredoc_count > MAX_HEREDOCS)
-		{
-			printf("minishell: maximum here-document count exceeded\n");
-			// throw_err(INV_TOKEN, curr->value);
-			return (1);
-		}
-		// Must add here-doc WARNING !!!!
+			return (throw_err(INV_TOKEN, next->value), 1);
 		lst = lst->next;
 	}
 	return (0);

@@ -26,15 +26,14 @@ void	exec_pipe(t_cmd *cmd)
 		redir(cmd->redir, cmd->redircount);
 	if (cmd->argcount)
 		exec(cmd->args);
+	exit(0);
 }
 
 void	cmd_pipe(t_cmd *cmd)
 {
 	int		fdp[2];
 	pid_t	pid;
-	int		status;
 
-	status = 0;
 	pipe(fdp);
 	pid = fork();
 	if (pid == -1)
