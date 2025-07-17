@@ -81,6 +81,7 @@ static void	handle_token(t_lexer *lexer, char **start, t_expendable *expend)
 		*start = lexer->offset;
 	if (lexer->context == Separator && lexer->state == space)
 		finalize_current_token(lexer, start, expend);
+	lexer->offset++;
 }
 
 void	resolve_tokens(t_lexer *lexer)
@@ -95,7 +96,6 @@ void	resolve_tokens(t_lexer *lexer)
 		set_context(lexer, *(lexer->offset));
 		set_state(lexer);
 		handle_token(lexer, &start, &expend);
-		lexer->offset++;
 	}
 	finalize_current_token(lexer, &start, &expend);
 	append_token(lexer, create_token("", End_of_file, Not_expendable));

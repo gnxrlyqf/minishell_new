@@ -21,10 +21,10 @@ static int	is_operator(t_token_type type)
 static int	unclosed_quote_error(t_context ctx)
 {
 	if (ctx == Quoted)
-		printf("minishell: syntax error: unexpected newline \
+		_printfd(2, "minishell: syntax error: unexpected newline \
             while looking for matching '\''\n");
 	else if (ctx == Double_quoted)
-		printf("minishell: syntax error: unexpected newline \
+		_printfd(2, "minishell: syntax error: unexpected newline \
             while looking for matching '\"'\n");
 	return (ctx == Quoted || ctx == Double_quoted);
 }
@@ -57,8 +57,31 @@ static int	check_token_sequence(t_list *lst)
 	return (0);
 }
 
+static int	check_heredoc_limit(t_list *lst)
+{
+	t_token	*tok;
+	int		count;
+
+	count = 0;
+	while (lst)
+	{
+		tok = lst->data;
+		if (tok->type == Here_doc)
+			count++;
+		if (count > MAX_HEREDOCS)
+		{
+			_printfd(2, "minishell: maximum here-document count exceeded\n");
+			return (1);
+		}
+		lst = lst->next;
+	}
+	return (0);
+}
+
 int	check_syntax_errors(t_lexer *lexer)
 {
+	if (check_heredoc_limit(lexer->tokens))
+		return (1);
 	if (unclosed_quote_error(lexer->context))
 		return (1);
 	if (check_token_sequence(lexer->tokens))
