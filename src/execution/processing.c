@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <main.h>
-#include <lexer.h>
 #include <_printfd.h>
+#include <lexer.h>
+#include <main.h>
 
 int	expand_status(t_list **list)
 {
@@ -28,12 +28,12 @@ int	expand_status(t_list **list)
 	return (2);
 }
 
-char    *quotes(char *str)
+char	*quotes(char *str)
 {
-	char    *result;
-	int i;
-	int j;
-	int c;
+	char	*result;
+	int		i;
+	int		j;
+	int		c;
 
 	result = malloc(ft_strlen(str) + 1);
 	if (!result)
@@ -55,7 +55,7 @@ char    *quotes(char *str)
 	return (result);
 }
 
-int		expandable(char *str, int c)
+int	expandable(char *str, int c)
 {
 	str++;
 	if (!*str)
@@ -133,8 +133,10 @@ void	do_heredoc(char *file, char *eof, int expand)
 		free(line);
 	}
 	if (!line)
-		_printfd(1, "\nminishell: warning: here-document\
- delimited by end-of-file (wanted `%s')\n", eof);
+		_printfd(1,
+					"\nminishell: warning: here-document\
+ delimited by end-of-file (wanted `%s')\n",
+					eof);
 	close(fd);
 	free_lexer(data()->lexer);
 	cleanup(15);
@@ -143,7 +145,7 @@ void	do_heredoc(char *file, char *eof, int expand)
 
 void	hdparent(int pid, char *file)
 {
-	int status;
+	int	status;
 
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
@@ -157,7 +159,7 @@ void	hdparent(int pid, char *file)
 
 char	*hdoc(t_cmd *cmd, char *eof, int expand)
 {
-	t_shell *shell;
+	t_shell	*shell;
 	int		pid;
 	char	*file;
 

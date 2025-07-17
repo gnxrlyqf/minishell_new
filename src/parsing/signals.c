@@ -15,20 +15,19 @@
 
 void	sigint_handler(int sig)
 {
-    (void)sig;
-    data()->status = 130;
-    write(1, "\n", 1);
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
+	(void)sig;
+	data()->status = 130;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-void heredoc_sigint_handler(int sig)
+void	heredoc_sigint_handler(int sig)
 {
-    (void)sig;
-    write(1, "\n", 1);
-    free_lexer(data()->lexer);
-    cleanup(15);
-    exit(130);
+	(void)sig;
+	write(1, "\n", 1);
+	free_lexer(data()->lexer);
+	cleanup(15);
+	exit(130);
 }
-

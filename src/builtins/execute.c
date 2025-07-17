@@ -14,14 +14,11 @@
 
 int	check_builtins(t_cmd *cmd)
 {
-	char			**args;
-	int				i;
-	static t_builtin	funcs[] = {
-		echo, cd, pwd, export, unset, env, __exit
-	};
-	static char		*names[] = {
-		"echo", "cd", "pwd", "export", "unset", "env", "exit"
-	};
+	char				**args;
+	int					i;
+	static t_builtin	funcs[] = {echo, cd, pwd, export, unset, env, __exit};
+	static char			*names[] = {"echo", "cd", "pwd", "export", "unset",
+		"env", "exit"};
 
 	if (!cmd->argcount)
 		return (-1);

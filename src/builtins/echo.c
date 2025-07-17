@@ -12,10 +12,10 @@
 
 #include <main.h>
 
-int check_flags(char **args, int *dash_n)
+int	check_flags(char **args, int *dash_n)
 {
-	int i;
-	char *arg;
+	int		i;
+	char	*arg;
 
 	i = 0;
 	while (*args)

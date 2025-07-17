@@ -10,17 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <main.h>
 #include <lexer.h>
-#include <readline/readline.h>
+#include <main.h>
 #include <readline/history.h>
+#include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 t_cmd	*parse(char *input)
 {
-	t_shell *shell;
-	t_cmd *pipeline;
+	t_shell	*shell;
+	t_cmd	*pipeline;
 
 	shell = data();
 	shell->lexer = init_lexer(input);
@@ -46,7 +46,7 @@ t_cmd	*parse(char *input)
 int	routine(void)
 {
 	char	*input;
-	t_shell *shell;
+	t_shell	*shell;
 
 	shell = data();
 	while (1)

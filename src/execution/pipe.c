@@ -14,7 +14,7 @@
 
 void	exec_pipe(t_cmd *cmd)
 {
-	int status;
+	int	status;
 
 	status = check_builtins(cmd);
 	if (status != -1)

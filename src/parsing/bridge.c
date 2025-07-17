@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <_printfd.h>
 #include <lexer.h>
 #include <main.h>
-#include <_printfd.h>
 
 void	count_words(t_list *list, int *args, int *redir)
 {
@@ -121,7 +121,7 @@ t_cmd	*create_cmd(t_list **list, t_list *cpy)
 t_cmd	*create_pipeline(t_list *list)
 {
 	t_list	*cpy;
-	t_shell *shell;
+	t_shell	*shell;
 	t_cmd	*cmd;
 
 	cpy = list;

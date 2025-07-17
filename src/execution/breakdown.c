@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <main.h>
 #include <_printfd.h>
+#include <main.h>
 
 int	my_open_builtin(char *path, int flags)
 {
 	int		fd;
 	char	*ex;
-	int expanded;
+	int		expanded;
 
 	expanded = 0;
 	ex = quotes_expand(path, &expanded);
@@ -38,7 +38,7 @@ int	my_open(char *path, int flags)
 {
 	int		fd;
 	char	*ex;
-	int expanded;
+	int		expanded;
 
 	expanded = 0;
 	ex = quotes_expand(path, &expanded);

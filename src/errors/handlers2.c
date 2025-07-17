@@ -19,7 +19,7 @@ void	ambig_redir(char *data)
 	_printfd(2, "%s: ambiguous redirect\n", data);
 	cleanup(15);
 }
-	
+
 void	cmd_enoent(char *data)
 {
 	_printfd(2, "%s: command not found\n", data);

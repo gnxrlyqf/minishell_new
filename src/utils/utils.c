@@ -19,9 +19,9 @@ char	*max_str(char *a, char *b)
 	return (b);
 }
 
-t_shell *data(void)
+t_shell	*data(void)
 {
-	static t_shell *shell;
+	static t_shell	*shell;
 
 	if (!shell)
 	{
@@ -34,7 +34,7 @@ t_shell *data(void)
 
 void	init_shell(char **envp)
 {
-	t_shell *shell;
+	t_shell	*shell;
 
 	shell = data();
 	shell->env = init_env(envp);
@@ -49,7 +49,7 @@ void	init_shell(char **envp)
 
 void	cleanup(int n)
 {
-	t_shell *shell;
+	t_shell	*shell;
 
 	shell = data();
 	if (1 & n)

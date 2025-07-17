@@ -26,8 +26,8 @@ int	wait_children(int last)
 		wait_pid = wait(&status);
 		if (wait_pid == -1)
 			break ;
-		if (WIFSIGNALED(status) && \
-			(WTERMSIG(status) == SIGINT || WTERMSIG(status) == SIGQUIT))
+		if (WIFSIGNALED(status) && (WTERMSIG(status) == SIGINT
+				|| WTERMSIG(status) == SIGQUIT))
 			sig_flag = WTERMSIG(status);
 		if (wait_pid == last)
 			last_status = status;
@@ -44,7 +44,7 @@ int	wait_children(int last)
 int	do_pipeline(t_cmd *pipeline)
 {
 	int	status;
-	int last;
+	int	last;
 
 	while (pipeline->next)
 	{

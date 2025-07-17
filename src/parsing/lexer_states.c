@@ -12,6 +12,40 @@
 
 #include <lexer.h>
 
+static void	sep_state(t_lexer *lexer, char current_char)
+{
+	if (is_whitespace(current_char))
+		lexer->state = space;
+	else if (current_char == '|')
+		lexer->state = pi_pe;
+	else if (current_char == '<')
+		handle_redirect_in(lexer);
+	else if (current_char == '>')
+		handle_redirect_out(lexer);
+}
+
+static void	dollar_state(t_lexer *lexer)
+{
+	if (lexer->in_heredoc_delim)
+		lexer->state = literal;
+	else
+		lexer->state = param_here;
+}
+
+static void	unquoted_state(t_lexer *lexer, char current_char)
+{
+	if (is_whitespace(current_char))
+		lexer->state = space;
+	else if (current_char == '<')
+		handle_redirect_in(lexer);
+	else if (current_char == '>')
+		handle_redirect_out(lexer);
+	else if (current_char == '|')
+		lexer->state = pi_pe;
+	else
+		lexer->state = literal;
+}
+
 t_lexer	*set_state(t_lexer *lexer)
 {
 	char	current_char;
@@ -22,41 +56,16 @@ t_lexer	*set_state(t_lexer *lexer)
 	if (lexer->context == Separator && !is_whitespace(current_char))
 		lexer->in_heredoc_delim = 0;
 	if (lexer->context == Separator)
-	{
-		if (is_whitespace(current_char))
-			lexer->state = space;
-		else if (current_char == '|')
-			lexer->state = pi_pe;
-		else if (current_char == '<')
-			handle_redirect_in(lexer);
-		else if (current_char == '>')
-			handle_redirect_out(lexer);
-	}
+		sep_state(lexer, current_char);
 	else if (current_char == '\'' && lexer->context != Double_quoted)
 		lexer->state = single_quote;
 	else if (current_char == '"' && lexer->context != Quoted)
 		lexer->state = double_quote;
 	else if (current_char == '$' && lexer->context != Quoted
 		&& is_valid_param_start(lexer->offset + 1))
-	{
-		if (lexer->in_heredoc_delim)
-			lexer->state = literal;
-		else
-			lexer->state = param_here;
-	}
+		dollar_state(lexer);
 	else if (lexer->context != Quoted && lexer->context != Double_quoted)
-	{
-		if (is_whitespace(current_char))
-			lexer->state = space;
-		else if (current_char == '<')
-			handle_redirect_in(lexer);
-		else if (current_char == '>')
-			handle_redirect_out(lexer);
-		else if (current_char == '|')
-			lexer->state = pi_pe;
-		else
-			lexer->state = literal;
-	}
+		unquoted_state(lexer, current_char);
 	else
 		lexer->state = literal;
 	return (lexer);
