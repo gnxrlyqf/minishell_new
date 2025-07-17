@@ -44,8 +44,7 @@ char	*check_cwd(char *cmd, t_env *env)
 	if (!curr)
 		return (_strdup(cmd));
 	out = mkpath(curr->value, cmd);
-	if (stat(out, &st) == -1)
-		throw_err(FILE_ENOENT, out);
+	stat(out, &st);
 	if (!access(out, F_OK | X_OK) && !S_ISDIR(st.st_mode))
 		return (out);
 	free(out);
@@ -104,7 +103,7 @@ void	exec(char **args)
 	char	**envp;
 	char	*path;
 	int		envsize;
-	t_shell *shell;
+	t_shell	*shell;
 
 	if (!**args)
 		throw_err(CMD_ENOENT, _strdup(""));

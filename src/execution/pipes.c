@@ -56,27 +56,6 @@ int	do_pipeline(t_cmd *pipeline)
 	return (status);
 }
 
-int	start(t_cmd *pipeline)
-{
-	int	fds[3];
-	int	status;
-
-	status = 0;
-	fds[0] = dup(0);
-	fds[1] = dup(1);
-	fds[2] = dup(2);
-	data()->status = do_pipeline(pipeline);
-	dup2(fds[0], 0);
-	dup2(fds[1], 1);
-	dup2(fds[2], 2);
-	close(fds[0]);
-	close(fds[1]);
-	close(fds[2]);
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
-	return (data()->status);
-}
-
 int	cmd(t_cmd *cmd)
 {
 	int	pid;
@@ -103,4 +82,48 @@ int	cmd(t_cmd *cmd)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	return (pid);
+}
+
+void	cmd_pipe(t_cmd *cmd)
+{
+	int		fdp[2];
+	pid_t	pid;
+
+	pipe(fdp);
+	pid = fork();
+	if (pid == -1)
+		throw_err(SYSCALL_FAIL, "fork");
+	if (!pid)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		close(fdp[0]);
+		dup2(fdp[1], 1);
+		exec_pipe(cmd);
+	}
+	else
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		close(fdp[1]);
+		dup2(fdp[0], 0);
+	}
+}
+
+void	exec_pipe(t_cmd *cmd)
+{
+	int	status;
+
+	status = check_builtins(cmd);
+	if (status != -1)
+	{
+		cleanup(3);
+		exit(status);
+	}
+	if (cmd->redircount)
+		redir(cmd->redir, cmd->redircount);
+	if (cmd->argcount)
+		exec(cmd->args);
+	cleanup(15);
+	exit(0);
 }

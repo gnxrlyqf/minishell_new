@@ -98,31 +98,33 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-int					is_whitespace(char c);
-int					is_quote(char c);
-int					is_redirect(char c);
-int					is_seperator(char c);
-int					is_valid_param_start(char *str);
-int					is_valid_param_char(char c);
-int					contains_parameter(char *value);
-void				handle_redirect_in(t_lexer *lexer);
-void				handle_redirect_out(t_lexer *lexer);
-void				skip_space(t_lexer *lexer);
-t_lexer				*init_lexer(const char *input);
-void				free_lexer(t_lexer *lexer);
-t_token				*create_token(char *value, t_token_type type,
-						t_expendable expendable);
-void				free_token(void *ptr);
-void				append_token(t_lexer *lexer, t_token *token);
-t_lexer				*set_state(t_lexer *lexer);
-void				set_context(t_lexer *lexer, char c);
-void				resolve_tokens(t_lexer *lexer);
-t_cmd				*create_pipeline(t_list *list);
-char				*quotes(char *str);
-t_token_type		get_token_type(t_state state);
-t_quote_type		get_quote_type(t_context context);
-void				sigint_handler(int sig);
-void				heredoc_sigint_handler(int sig);
-int					check_syntax_errors(t_lexer *lexer);
+int				is_whitespace(char c);
+int				is_quote(char c);
+int				is_redirect(char c);
+int				is_seperator(char c);
+int				is_valid_param_start(char *str);
+int				is_valid_param_char(char c);
+int				contains_parameter(char *value);
+void			handle_redirect_in(t_lexer *lexer);
+void			handle_redirect_out(t_lexer *lexer);
+void			skip_space(t_lexer *lexer);
+t_lexer			*init_lexer(const char *input);
+void			free_lexer(t_lexer *lexer);
+t_token			*create_token(char *value, t_token_type type,
+					t_expendable expendable);
+void			free_token(void *ptr);
+void			append_token(t_lexer *lexer, t_token *token);
+t_lexer			*set_state(t_lexer *lexer);
+void			set_context(t_lexer *lexer, char c);
+void			resolve_tokens(t_lexer *lexer);
+t_cmd			*create_pipeline(t_list *list);
+char			*quotes(char *str);
+t_token_type	get_token_type(t_state state);
+t_quote_type	get_quote_type(t_context context);
+void			sigint_handler(int sig);
+void			heredoc_sigint_handler(int sig);
+int				check_syntax_errors(t_lexer *lexer);
+int				is_operator_state(t_state state);
+int				is_redirection(t_token_type type);
 
 #endif

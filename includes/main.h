@@ -66,16 +66,14 @@ typedef struct s_shell
 typedef void	(*t_error_handler)(char *data);
 typedef int		(*t_builtin)(char **args);
 
-extern t_shell	g_shell;
-
 t_list	*add_node(t_list **head, void *value);
 void	free_list(t_list **head);
 int		list_len(t_list *list);
 int		fill_var(char *str, t_list **list, int *expanded);
 char	*make_str(t_list *list);
 char	*quotes_expand(char *str, int *expanded);
-int		my_open(char *path, int flags);
-int		my_open_builtin(char *path, int flags);
+int		my_open(char *path, int flags, int del)
+int		my_open_builtin(char *path, int flags, int del);
 char	*mkfilename(char *path);
 char	*hdoc(t_cmd *cmd, char *eof, int expand);
 void	do_heredoc(char *file, char *eof, int expand);
@@ -86,6 +84,7 @@ char	*check_cwd(char *cmd, t_env *env);
 char	*check_path(char *path);
 char	*which(char *cmd, t_env *env);
 void	exec(char **args);
+void	exec_pipe(t_cmd *cmd);
 int		cmd(t_cmd *cmd);
 void	cmd_pipe(t_cmd *cmd);
 t_env	*init_env(char **envp);

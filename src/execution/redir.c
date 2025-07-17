@@ -13,7 +13,7 @@
 #include <_printfd.h>
 #include <main.h>
 
-int	my_open_builtin(char *path, int flags)
+int	my_open_builtin(char *path, int flags, int del)
 {
 	int		fd;
 	char	*ex;
@@ -30,11 +30,13 @@ int	my_open_builtin(char *path, int flags)
 	fd = open(ex, flags, 0644);
 	if (fd == -1)
 		perror(ex);
+	if (del)
+		unlink(ex);
 	free(ex);
 	return (fd);
 }
 
-int	my_open(char *path, int flags)
+int	my_open(char *path, int flags, int del)
 {
 	int		fd;
 	char	*ex;
@@ -51,6 +53,8 @@ int	my_open(char *path, int flags)
 	fd = open(ex, flags, 0644);
 	if (fd == -1)
 		throw_err(OPEN_FAIL, ex);
+	if (del)
+		unlink(ex);
 	free(ex);
 	return (fd);
 }
@@ -104,7 +108,7 @@ void	redir(t_redir *redir, int size)
 int	redir_builtin(t_redir *redir, int size)
 {
 	int		i;
-	int		fd[2];
+	int		fd[3];
 	char	*file;
 
 	i = -1;
