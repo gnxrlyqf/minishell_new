@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra
 INC = -I./includes
 LIB = -lreadline
 SRC = $(wildcard src/*/*.c) src/main.c

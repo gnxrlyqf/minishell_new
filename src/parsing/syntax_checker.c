@@ -12,6 +12,7 @@
 
 #include <lexer.h>
 #include <main.h>
+#include <_printfd.h>
 
 static int	is_operator(t_token_type type)
 {

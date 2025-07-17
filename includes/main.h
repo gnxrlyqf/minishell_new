@@ -72,13 +72,13 @@ int		list_len(t_list *list);
 int		fill_var(char *str, t_list **list, int *expanded);
 char	*make_str(t_list *list);
 char	*quotes_expand(char *str, int *expanded);
-int		my_open(char *path, int flags, int del)
-int		my_open_builtin(char *path, int flags, int del);
+int		my_open(char *path, int flags, int del);
+int		my_open_b(char *path, int flags, int del);
 char	*mkfilename(char *path);
 char	*hdoc(t_cmd *cmd, char *eof, int expand);
 void	do_heredoc(char *file, char *eof, int expand);
 void	redir(t_redir *redir, int size);
-int		redir_builtin(t_redir *redir, int size);
+int		redir_builtin(t_redir *redir, int size, int i);
 char	*mkpath(char *path, char *cmd);
 char	*check_cwd(char *cmd, t_env *env);
 char	*check_path(char *path);

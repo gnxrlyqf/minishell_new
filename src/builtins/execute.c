@@ -30,7 +30,7 @@ int	check_builtins(t_cmd *cmd)
 		return (-1);
 	if (cmd->redircount)
 	{
-		if (redir_builtin(cmd->redir, cmd->redircount))
+		if (redir_builtin(cmd->redir, cmd->redircount, -1))
 			return (data()->status = 1, 1);
 	}
 	data()->status = funcs[i](args);

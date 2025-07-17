@@ -13,7 +13,7 @@
 #include <_printfd.h>
 #include <main.h>
 
-int	my_open_builtin(char *path, int flags, int del)
+int	my_open_b(char *path, int flags, int del)
 {
 	int		fd;
 	char	*ex;
@@ -27,6 +27,10 @@ int	my_open_builtin(char *path, int flags, int del)
 		free(ex);
 		return (-1);
 	}
+	if (!_strcmp(ex, "/dev/stdin"))
+		return (0);
+	if (!_strcmp(ex, "/dev/stdout"))
+		return (1);
 	fd = open(ex, flags, 0644);
 	if (fd == -1)
 		perror(ex);
@@ -50,6 +54,10 @@ int	my_open(char *path, int flags, int del)
 		free(ex);
 		exit(1);
 	}
+	if (!_strcmp(ex, "/dev/stdin"))
+		return (0);
+	if (!_strcmp(ex, "/dev/stdout"))
+		return (1);
 	fd = open(ex, flags, 0644);
 	if (fd == -1)
 		throw_err(OPEN_FAIL, ex);
@@ -95,38 +103,46 @@ void	redir(t_redir *redir, int size)
 	{
 		file = redir[i].file;
 		if (redir[i].type == Redirect_In || redir[i].type == Here_doc)
-			fd[0] = my_open(file, O_RDONLY);
+			fd[0] = my_open(file, O_RDONLY, (redir[i].type == Here_doc));
 		if (redir[i].type == Redirect_Out || redir[i].type == Append)
-			fd[1] = my_open(file, 1089 | (redir[i].type == 3) * 512);
-		if (redir[i].type == Here_doc)
-			unlink(file);
+			fd[1] = my_open(file, 1089 | (redir[i].type == 3) * 512, 0);
+		if (fd[0] != 0)
+		{
+			dup2(fd[0], 0);
+			close(fd[0]);
+		}
+		if (fd[1] != 1)
+		{
+			dup2(fd[1], 1);
+			close(fd[1]);
+		}
 	}
-	dup2(fd[0], 0);
-	dup2(fd[1], 1);
 }
 
-int	redir_builtin(t_redir *redir, int size)
+int	redir_builtin(t_redir *r, int size, int i)
 {
-	int		i;
-	int		fd[3];
-	char	*file;
+	int		fd[2];
 
-	i = -1;
 	fd[0] = 0;
 	fd[1] = 1;
 	while (++i < size)
 	{
-		file = redir[i].file;
-		if (redir[i].type == Redirect_In || redir[i].type == Here_doc)
-			fd[0] = my_open_builtin(file, O_RDONLY);
-		if (redir[i].type == Redirect_Out || redir[i].type == Append)
-			fd[1] = my_open_builtin(file, 1089 | (redir[i].type == 3) * 512);
-		if (redir[i].type == Here_doc)
-			unlink(file);
+		if (r[i].type == Redirect_In || r[i].type == Here_doc)
+			fd[0] = my_open_b(r[i].file, O_RDONLY, (r[i].type == 5));
+		if (r[i].type == Redirect_Out || r[i].type == Append)
+			fd[1] = my_open_b(r[i].file, 1089 | (r[i].type == 3) * 512, 0);
 		if (fd[0] == -1 || fd[1] == -1)
 			return (1);
+		if (fd[0] != 0)
+		{
+			dup2(fd[0], 0);
+			close(fd[0]);
+		}
+		if (fd[1] != 1)
+		{
+			dup2(fd[1], 1);
+			close(fd[1]);
+		}
 	}
-	dup2(fd[0], 0);
-	dup2(fd[1], 1);
 	return (0);
 }

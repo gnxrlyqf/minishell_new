@@ -50,7 +50,7 @@ int	cd(char **args)
 	}
 	if (*(args + 1))
 	{
-		write(2, "cd: too many arguments\n", 23);
+		_printfd(2, "cd: too many arguments\n");
 		return (1);
 	}
 	dir = quotes_expand(*args, NULL);
